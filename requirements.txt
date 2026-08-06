@@ -1,0 +1,6 @@
+yfinance>=0.2.40
+nsetools>=2.0.1
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+feedparser>=6.0.0
+Pillow>=10.0.0

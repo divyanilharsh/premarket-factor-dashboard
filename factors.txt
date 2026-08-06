@@ -1,0 +1,75 @@
+# PRE-MARKET FACTOR CHECKLIST (check before market opens)
+# Track change vs previous close/session. Sources: news, exchanges, RBI, FII/DII data.
+
+## 1. CRUDE OIL
+- [ ] Brent crude price today vs yesterday (change $ and %) [Higher crude = higher inflation, costs, CAD pressure = bearish; lower = bullish for India, net importer]
+- [ ] WTI crude price today vs yesterday [Same as Brent; watch as a secondary confirmation]
+- [ ] Direction: rising / falling [Rising crude hits airlines, paints, tyres, OMCs margins and inflation]
+
+## 2. CURRENCY
+- [ ] USD/INR today vs yesterday (rupee change) [Stronger rupee = cheaper imports, FII-friendly = bullish; weaker = outflows, bearish]
+- [ ] Direction: rupee strengthening / weakening [Steep fall in rupee triggers FII selling and inflation fears]
+
+## 3. FOREIGN FLOWS
+- [ ] FII net buy/sell today's provisional data [FII buying = direct liquidity + confidence = bullish; selling = bearish]
+- [ ] DII net buy/sell today's provisional data [DII buying absorbs FII selling, cushions downside]
+- [ ] DII selling to fund government OFS / primary issuance [Primary mkt absorbs cash = secondary market starved of liquidity = bearish]
+- [ ] FII buying during domestic-led selloff [FII accumulation at dips = long-term confidence, counter to index drop]
+- [ ] FII trend: consecutive days of buying/selling [Sustained trend > single-day noise for direction]
+
+## 4. GLOBAL MARKETS
+- [ ] US indices overnight (Dow, S&P 500, Nasdaq) [Strong US close = risk-on open in India; weak = risk-off]
+- [ ] Asian markets this morning (Nikkei, Hang Seng, Shanghai) [Mirror for India's open sentiment]
+- [ ] Global recession fears / risk-on vs risk-off mood [Deep risk-off = bearish for EM; relief = bullish]
+- [ ] SGX Nifty / GIFT Nifty futures (India open gap) [Direct preview of India's opening level]
+- [ ] US Fed rate decision / policy stance [Hawkish Fed = pressure on EM; dovish = risk-on, bullish]
+- [ ] Global currency interventions (e.g., yen) [Intervention shifts FX flows, adds volatility]
+
+## 5. US BOND YIELDS / DOLLAR
+- [ ] 10-yr US Treasury yield [Rising yield pulls money out of EM equities to US = bearish]
+- [ ] US Dollar Index (DXY) [Strong dollar = FII outflows from India, weak rupee = bearish]
+
+## 6. GEOPOLITICS
+- [ ] Oil-supply region tensions (Middle East, Strait of Hormuz) [Escalation = oil spike + risk-off = bearish]
+- [ ] Trade war / tariffs news [Tariffs hit exports, sentiment = bearish for risk assets]
+- [ ] Sanctions / military action headlines [Sudden shocks cause sharp volatility, usually bearish]
+- [ ] US-India tariff / retaliatory trade action (protectionism) [Tariff on Indian goods = big hit to IT & exports = bearish]
+- [ ] Peace-talk status (talks confirmed vs denied/off) [Talks ON = oil down = bullish; talks denied/off = oil rebound = bearish]
+
+## 7. MACRO DATA / POLICY
+- [ ] RBI policy / rate expectations, repo rate [Rate cut = bullish liquidity; hike/tight = bearish]
+- [ ] RBI forward guidance / hawkish vs dovish language risk [Even with rate held, hawkish tone = bearish; dovish = relief rally]
+- [ ] Exports / imports / trade balance (CAD pressure) [Widening deficit = rupee pressure = bearish]
+- [ ] Central bank liquidity tightening / forex measures [Tighter liquidity = bearish; supporting rupee = positive]
+- [ ] India CPI / WPI inflation releases [High inflation = fewer cuts, rate pressure = bearish]
+- [ ] IIP, GST collections, monsoon [Strong growth signals = bullish for economic outlook]
+- [ ] El Nino / monsoon-deficit risk on food inflation [Weak monsoon = higher food inflation = rate pressure = bearish]
+- [ ] India forex reserves level [Rising reserves = external stability = bullish; falling = bearish]
+- [ ] Important scheduled economic releases today [Uncertainty before data = volatile; beat = bullish]
+
+## 8. EARNINGS / CORPORATE NEWS
+- [ ] Major company results due today (watchlist) [Beats lift stock/index; misses drag]
+- [ ] Big earnings beats/misses after hours [Move the specific stock and sector next open]
+- [ ] Order wins, deal announcements [Positive news = stock-specific bullish triggers]
+- [ ] Government OFS / divestment offerings (supply overhang) [Discounted OFS = supply pressure + liquidity drain = bearish]
+- [ ] IPO listings / new primary issues [Big IPO absorbs market liquidity, adds volatility = can weigh on indices]
+- [ ] Regulatory / compliance orders against companies (SEBI ban, FSSAI, etc.) [Governance risk hits stock hard, negative contagion to sector]
+
+## 9. SECTOR SIGNALS
+- [ ] Aviation (reacts to crude) [Fuel is biggest cost; low crude = bullish, high = bearish]
+- [ ] Banks/Financials (FII flows, yields) [Gains on inflows; NIMs react to rates]
+- [ ] IT (global tech, AI news, rupee) [Weak rupee boosts earnings; AI headlines drive sentiment]
+- [ ] US visa policy / IT outsourcing restrictions [Restrictions hurt Indian IT = sector drag, bearish]
+- [ ] AI disrupting India IT outsourcing model [Long-term structural fear; hits IT sector sentiment = bearish]
+- [ ] Auto (GST, oil, demand) [Low oil + GST cuts = demand boost = bullish]
+- [ ] OMCs / Paints / Tyres (crude-linked margins) [Low crude = better margins = bullish]
+
+## 10. SENTIMENT / TECHNICAL
+- [ ] India VIX level (fear gauge) [High VIX = fear/weakness; low = complacency/bullish]
+- [ ] Nifty support / resistance levels [Breakdown = sell; breakout = buy; helps entry/exit]
+- [ ] FII/DII futures & options positioning [Heavy FII shorts = squeeze risk; longs = bullish]
+- [ ] Put-Call Ratio (PCR), max pain, heavy call-writing strikes [Falling PCR = bearish; heavy call OI = ceiling]
+- [ ] SEBI Closing Auction Session (CAS) distortions / normalization [New rule can cause artificial end-day spikes and next-day unwinding = false signals]
+- [ ] Weekly / monthly options expiry day [Expiry can cause whipsaw, sharp swings, premium distortion = high volatility]
+- [ ] Block deals / bulk deals activity [Large off-market trades move prices sharply; watch pre-market deal reports]
+- [ ] Market breadth expectations / overnight news tone [Broad positive news = strong open; mixed = cautious]

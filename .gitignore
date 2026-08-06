@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+data/cache/
+data/factors.json
+data/report_*.csv
+.venv/
+venv/
