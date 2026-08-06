@@ -86,16 +86,17 @@ class ChecklistItem(ttk.Frame):
 
         if self.factor_result.details:
             def enter(e):
-                self.tooltip.place(x=e.x_root - self.winfo_rootx() + 10,
-                                   y=e.y_root - self.winfo_rooty() + 10)
+                self.tooltip.geometry(f"+{e.x_root + 10}+{e.y_root + 10}")
+                self.tooltip.deiconify()
                 self.tooltip.lift()
 
             def leave(e):
-                self.tooltip.place_forget()
+                self.tooltip.withdraw()
 
             self.tooltip = tk.Toplevel(self)
             self.tooltip.wm_overrideredirect(True)
             self.tooltip.attributes("-topmost", True)
+            self.tooltip.withdraw()
             tooltip_bg = "#2a2a4a"
             tk.Label(self.tooltip, text=self.factor_result.details,
                      bg=tooltip_bg, fg=FG_PRIMARY, font=("Segoe UI", 8),
