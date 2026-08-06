@@ -4,6 +4,7 @@ from utils.news_scraper import fetch_news_headlines, assess_headline_tone
 
 class GeopoliticsAgent(BaseAgent):
     agent_name = "geopolitics"
+    cache_ttl_hours = 0.17
 
     TOPICS = [
         ("oil_tensions", "Middle East / Oil Region Tensions",

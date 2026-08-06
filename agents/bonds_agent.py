@@ -6,6 +6,7 @@ from config import TICKERS
 
 class BondsAgent(BaseAgent):
     agent_name = "bonds"
+    cache_ttl_hours = 0.25
 
     def fetch(self) -> dict[str, FactorResult]:
         cache = self._load_cache()

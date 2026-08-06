@@ -8,6 +8,7 @@ from utils.nse_scraper import (get_fii_dii_data, get_option_chain,
 
 class SentimentAgent(BaseAgent):
     agent_name = "sentiment"
+    cache_ttl_hours = 0.25
 
     def fetch(self) -> dict[str, FactorResult]:
         cache = self._load_cache()

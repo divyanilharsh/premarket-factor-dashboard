@@ -10,6 +10,7 @@ from utils.news_scraper import fetch_news_headlines
 
 class FlowsAgent(BaseAgent):
     agent_name = "flows"
+    cache_ttl_hours = 0.25
 
     def fetch(self) -> dict[str, FactorResult]:
         cache = self._load_cache()

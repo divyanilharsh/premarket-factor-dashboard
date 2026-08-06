@@ -55,6 +55,7 @@ class FactorResult:
 
 class BaseAgent(threading.Thread):
     agent_name: str = "base"
+    cache_ttl_hours: float = CACHE_TTL_HOURS
 
     def __init__(self, callback=None):
         super().__init__(daemon=True)
@@ -135,7 +136,9 @@ class BaseAgent(threading.Thread):
             results[key] = r
         return results
 
-    def _save_cache(self, data: dict, ttl_hours: float = CACHE_TTL_HOURS):
+    def _save_cache(self, data: dict, ttl_hours: float = None):
+        if ttl_hours is None:
+            ttl_hours = self.cache_ttl_hours
         cache_file = os.path.join(CACHE_DIR, f"{self.agent_name}.json")
         data["_timestamp"] = time.time()
         data["_cache_ttl_hours"] = ttl_hours

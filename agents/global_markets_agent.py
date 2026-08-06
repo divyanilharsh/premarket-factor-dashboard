@@ -9,6 +9,7 @@ from config import TICKERS
 
 class GlobalMarketsAgent(BaseAgent):
     agent_name = "global_markets"
+    cache_ttl_hours = 0.25
 
     def fetch(self) -> dict[str, FactorResult]:
         cache = self._load_cache()

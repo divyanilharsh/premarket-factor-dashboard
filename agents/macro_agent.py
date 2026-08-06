@@ -11,6 +11,7 @@ from utils.news_scraper import fetch_news_headlines, assess_headline_tone
 
 class MacroAgent(BaseAgent):
     agent_name = "macro"
+    cache_ttl_hours = 6
 
     def fetch(self) -> dict[str, FactorResult]:
         cache = self._load_cache()

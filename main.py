@@ -70,9 +70,13 @@ class App:
             self.dashboard._status_bar.set_text("Showing cached data — press Refresh for latest")
 
     def on_refresh(self):
+        if getattr(self, "_refreshing", False):
+            self.dashboard._status_bar.set_text("Refresh already in progress...")
+            return
+        self._refreshing = True
         self.dashboard.set_agent_progress(0, 10)
         self._error_count = 0
-        t = threading.Thread(target=self._run_agents, daemon=True)
+        t = threading.Thread(target=self._run_agents_safe, daemon=True)
         t.start()
 
     def _run_agents(self):
@@ -135,6 +139,14 @@ class App:
 
         self._result_queue.put(("done", final_results, error_count))
 
+    def _run_agents_safe(self):
+        try:
+            self._run_agents()
+        except Exception as e:
+            traceback.print_exc()
+            self._result_queue.put(("done", {}, 10))
+            self._result_queue.put(("error", str(e)))
+
     def _poll_queue(self):
         try:
             while True:
@@ -144,18 +156,22 @@ class App:
                     self.dashboard.set_agent_progress(completed, 10)
                 elif msg[0] == "done":
                     _, results, error_count = msg
+                    self._refreshing = False
                     self.dashboard.update_results(
                         results,
                         timestamp=format_timestamp(),
                         market_open=is_market_open(),
                     )
                     self.dashboard.set_ready(error_count)
+                elif msg[0] == "error":
+                    self._refreshing = False
+                    self.dashboard.set_error(msg[1])
         except queue.Empty:
             pass
         self.root.after(500, self._poll_queue)
 
     def run(self):
-        self.dashboard.start_auto_refresh(interval_minutes=30)
+        self.dashboard.start_auto_refresh(interval_minutes=10, off_hours_minutes=60)
         self.root.mainloop()
 
 

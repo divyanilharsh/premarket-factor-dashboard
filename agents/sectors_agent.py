@@ -4,6 +4,7 @@ from utils.news_scraper import fetch_news_headlines, assess_headline_tone
 
 class SectorsAgent(BaseAgent):
     agent_name = "sectors"
+    cache_ttl_hours = 0.5
 
     def set_external_data(self, crude_results: dict, currency_results: dict,
                           global_results: dict):

@@ -230,8 +230,10 @@ class Dashboard:
         self._refresh_btn.configure(command=callback)
         self._on_refresh_callback = callback
 
-    def start_auto_refresh(self, interval_minutes: int = 30):
+    def start_auto_refresh(self, interval_minutes: int = 10,
+                           off_hours_minutes: int = 60):
         self._auto_interval_ms = interval_minutes * 60 * 1000
+        self._off_hours_interval_ms = off_hours_minutes * 60 * 1000
         self._schedule_auto_refresh()
 
     def _schedule_auto_refresh(self):
@@ -241,10 +243,16 @@ class Dashboard:
             pass
 
     def _auto_refresh_tick(self):
-        if self._on_refresh_callback and is_market_open():
-            self._status_bar.set_text("Auto-refresh triggered (market hours)")
-            self._on_refresh_callback()
-        self._schedule_auto_refresh()
+        if self._on_refresh_callback:
+            if is_market_open():
+                self._status_bar.set_text("Auto-refresh triggered (market hours)")
+                self._on_refresh_callback()
+                self._schedule_auto_refresh()
+            else:
+                self._status_bar.set_text(
+                    f"Market closed — next auto-refresh in "
+                    f"{self._off_hours_interval_ms // 60000} min (overnight US data)")
+                self.root.after(self._off_hours_interval_ms, self._auto_refresh_tick)
 
     def export_csv(self):
         try:

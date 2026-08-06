@@ -5,6 +5,7 @@ from utils.moneycontrol_scraper import fetch_results_due_today
 
 class EarningsAgent(BaseAgent):
     agent_name = "earnings"
+    cache_ttl_hours = 0.25
 
     def fetch(self) -> dict[str, FactorResult]:
         cache = self._load_cache()
