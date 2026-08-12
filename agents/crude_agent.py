@@ -76,7 +76,7 @@ class CrudeAgent(BaseAgent):
 
             latest = hist.iloc[-1]
             current = float(latest["Close"])
-            prev_close = float(hist.iloc[1]["Close"]) if len(hist) > 1 else current
+            prev_close = float(hist.iloc[-2]["Close"]) if len(hist) > 1 else current
 
             return self._make_result(
                 label=label,

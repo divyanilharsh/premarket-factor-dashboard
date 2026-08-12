@@ -54,7 +54,7 @@ class CurrencyAgent(BaseAgent):
 
             latest = hist.iloc[-1]
             current = float(latest["Close"])
-            prev_close = float(hist.iloc[0]["Close"]) if len(hist) > 1 else current
+            prev_close = float(hist.iloc[-2]["Close"]) if len(hist) > 1 else current
 
             direction = "strengthening" if current <= prev_close else "weakening"
             results["usd_inr"] = self._make_result(

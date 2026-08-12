@@ -70,7 +70,7 @@ class GlobalMarketsAgent(BaseAgent):
                 )
             latest = hist.iloc[-1]
             current = float(latest["Close"])
-            prev_close = float(hist.iloc[0]["Close"]) if len(hist) > 1 else current
+            prev_close = float(hist.iloc[-2]["Close"]) if len(hist) > 1 else current
             return self._make_result(
                 label=label,
                 value=f"{current:,.2f}",
@@ -96,7 +96,7 @@ class GlobalMarketsAgent(BaseAgent):
                 if not hist.empty:
                     latest = hist.iloc[-1]
                     current = float(latest["Close"])
-                    prev_close = float(hist.iloc[0]["Close"]) if len(hist) > 1 else current
+                    prev_close = float(hist.iloc[-2]["Close"]) if len(hist) > 1 else current
                     return self._make_result(
                         label="SGX / GIFT Nifty",
                         value=f"{current:,.2f}",
