@@ -26,22 +26,25 @@ class CrudeAgent(BaseAgent):
 
         brent_dir = results.get("brent", FactorResult(label="")).direction
         wti_dir = results.get("wti", FactorResult(label="")).direction
+        # with bullish_up=False, crude UP => direction "bearish" (higher crude is
+        # bad for India, a net importer)
+        rising = ("bearish", "bearish")
+        falling = ("bullish", "bullish")
         if brent_dir == wti_dir:
-            dir_label = brent_dir.capitalize()
-        elif brent_dir == "neutral":
-            dir_label = wti_dir.capitalize()
-        elif wti_dir == "neutral":
-            dir_label = brent_dir.capitalize()
+            dir_label = "Rising" if brent_dir == "bearish" else "Falling" if brent_dir == "bullish" else "Flat"
+        elif "neutral" in (brent_dir, wti_dir):
+            other = wti_dir if brent_dir == "neutral" else brent_dir
+            dir_label = "Rising" if other == "bearish" else "Falling" if other == "bullish" else "Flat"
         else:
             dir_label = "Mixed"
 
         results["direction"] = self._make_result(
             label="Direction",
             value=dir_label,
-            direction="bearish" if dir_label == "Rising" or dir_label == "Bearish"
-            else "bullish" if dir_label == "Falling" or dir_label == "Bullish"
+            direction="bearish" if dir_label == "Rising"
+            else "bullish" if dir_label == "Falling"
             else "neutral",
-            details="Rising crude = bearish for India (net importer)",
+            details="Rising crude = higher inflation, costs, CAD pressure = bearish for India (net importer)",
             source="yfinance",
         )
 
@@ -62,8 +65,8 @@ class CrudeAgent(BaseAgent):
                         label=label,
                         value=f"${price:.2f}",
                         change=self._pct_change(price, prev),
-                        direction=self._compute_direction(price, prev),
-                        details=f"Prev close: ${prev:.2f}",
+                        direction=self._compute_direction(price, prev, bullish_up=False),
+                        details=f"Prev close: ${prev:.2f} | Higher crude = bearish for India (net importer)",
                         source="yfinance",
                     )
                 return self._make_result(
@@ -73,14 +76,14 @@ class CrudeAgent(BaseAgent):
 
             latest = hist.iloc[-1]
             current = float(latest["Close"])
-            prev_close = float(hist.iloc[0]["Close"]) if len(hist) > 1 else current
+            prev_close = float(hist.iloc[1]["Close"]) if len(hist) > 1 else current
 
             return self._make_result(
                 label=label,
                 value=f"${current:.2f}",
                 change=self._pct_change(current, prev_close),
-                direction=self._compute_direction(current, prev_close),
-                details=f"Prev close: ${prev_close:.2f}",
+                direction=self._compute_direction(current, prev_close, bullish_up=False),
+                details=f"Prev close: ${prev_close:.2f} | Higher crude = bearish for India (net importer)",
                 source="yfinance",
             )
         except Exception as e:

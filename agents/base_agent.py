@@ -208,5 +208,5 @@ class BaseAgent(threading.Thread):
         if previous == 0:
             return "N/A"
         pct = ((current - previous) / abs(previous)) * 100
-        sign = "+" if pct >= 0 else ""
-        return f"{sign}{pct:.2f}%"
+        sign = "+" if pct >= 0 else "-"
+        return f"{sign}{abs(pct):.2f}%"

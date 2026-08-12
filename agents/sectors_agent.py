@@ -20,17 +20,25 @@ class SectorsAgent(BaseAgent):
 
         crude_dir = self._get_direction(getattr(self, "crude_results", {}), "brent")
         rupee_dir = self._get_direction(getattr(self, "currency_results", {}), "usd_inr")
+        nasdaq_dir = self._get_direction(getattr(self, "global_results", {}), "nasdaq")
 
         results = {}
 
-        aviation_bullish = crude_dir == "bearish"
-        results["aviation"] = self._make_result(
-            label="Aviation (crude-linked)",
-            value="Bullish" if aviation_bullish else "Bearish",
-            direction="bullish" if aviation_bullish else "bearish",
-            details="Fuel is biggest cost; low crude = bullish, high = bearish",
-            source="derived",
-        )
+        def crude_reaction(positive_details: str, negative_details: str) -> FactorResult:
+            if crude_dir == "bearish":
+                return self._make_result(label="", value="Bullish", direction="bullish",
+                                         details=positive_details, source="derived")
+            if crude_dir == "bullish":
+                return self._make_result(label="", value="Bearish", direction="bearish",
+                                         details=negative_details, source="derived")
+            return self._make_result(label="", value="Neutral", direction="neutral",
+                                     details="Crude flat vs prev close — no fuel-cost trigger. " + positive_details,
+                                     source="derived")
+
+        r = crude_reaction("Fuel is biggest cost; low crude = bullish, high = bearish",
+                           "Fuel is biggest cost; high crude = bearish")
+        r.label = "Aviation (crude-linked)"
+        results["aviation"] = r
 
         results["banks"] = self._make_result(
             label="Banks / Financials",
@@ -41,12 +49,28 @@ class SectorsAgent(BaseAgent):
             source="derived",
         )
 
-        it_bullish = crude_dir != "bearish"
+        it_score = 0
+        if rupee_dir == "bearish":
+            it_score += 1
+        elif rupee_dir == "bullish":
+            it_score -= 1
+        if nasdaq_dir == "bullish":
+            it_score += 1
+        elif nasdaq_dir == "bearish":
+            it_score -= 1
+        if it_score > 0:
+            it_value, it_dir = "Bullish", "bullish"
+        elif it_score < 0:
+            it_value, it_dir = "Bearish", "bearish"
+        else:
+            it_value, it_dir = "Neutral", "neutral"
         results["it"] = self._make_result(
             label="IT (global tech, rupee)",
-            value="Bullish" if it_bullish else "Neutral",
-            direction="bullish" if it_bullish else "neutral",
-            details="Weak rupee boosts IT earnings; AI headlines drive sentiment",
+            value=it_value,
+            direction=it_dir,
+            details=f"Weak rupee (USD/INR up) boosts IT earnings; Nasdaq direction sets global tech tone. "
+                    f"Signals: rupee {'weak' if rupee_dir == 'bearish' else 'strong' if rupee_dir == 'bullish' else 'flat'}, "
+                    f"Nasdaq {nasdaq_dir}",
             source="derived",
         )
 
@@ -54,23 +78,15 @@ class SectorsAgent(BaseAgent):
 
         results["ai_disruption"] = self._fetch_ai_news()
 
-        auto_bullish = crude_dir == "bearish"
-        results["auto"] = self._make_result(
-            label="Auto (GST, oil, demand)",
-            value="Bullish" if auto_bullish else "Bearish",
-            direction="bullish" if auto_bullish else "bearish",
-            details="Low oil + GST cuts = demand boost = bullish",
-            source="derived",
-        )
+        r = crude_reaction("Low oil + GST cuts = demand boost = bullish",
+                           "High oil = higher fuel prices, demand hit = bearish")
+        r.label = "Auto (GST, oil, demand)"
+        results["auto"] = r
 
-        omc_bullish = crude_dir == "bearish"
-        results["omcs"] = self._make_result(
-            label="OMCs / Paints / Tyres",
-            value="Bullish" if omc_bullish else "Bearish",
-            direction="bullish" if omc_bullish else "bearish",
-            details="Low crude = better margins = bullish",
-            source="derived",
-        )
+        r = crude_reaction("Low crude = better margins = bullish",
+                           "High crude = margin compression = bearish")
+        r.label = "OMCs / Paints / Tyres"
+        results["omcs"] = r
 
         cache_data = {k: v.to_dict() for k, v in results.items()}
         self._save_cache(cache_data, ttl_hours=1)
