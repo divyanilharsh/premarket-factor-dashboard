@@ -32,7 +32,7 @@ class BondsAgent(BaseAgent):
                      suffix: str = "", bullish_up: bool = True) -> FactorResult:
         try:
             t = yf.Ticker(ticker)
-            hist = t.history(period="2d")
+            hist = t.history(period="5d")
             if hist.empty:
                 info = t.info
                 price = info.get("regularMarketPrice") or info.get("previousClose")
@@ -42,7 +42,7 @@ class BondsAgent(BaseAgent):
                         label=label,
                         value=f"{price:.2f}{suffix}",
                         change=self._pct_change(price, prev),
-                        direction=self._compute_direction(price, prev, bullish_up=bullish_up),
+                        direction=self._compute_direction(price, prev, bullish_up=bullish_up, threshold=0.0005),
                         details=f"Prev close: {prev:.2f}{suffix}",
                         source="yfinance",
                     )
@@ -57,7 +57,7 @@ class BondsAgent(BaseAgent):
                 label=label,
                 value=f"{current:.2f}{suffix}",
                 change=self._pct_change(current, prev_close),
-                direction=self._compute_direction(current, prev_close, bullish_up=bullish_up),
+                direction=self._compute_direction(current, prev_close, bullish_up=bullish_up, threshold=0.0005),
                 details=f"Prev close: {prev_close:.2f}{suffix} | "
                         f"{'Rising = bearish for EM' if not bullish_up else ''}",
                 source="yfinance",

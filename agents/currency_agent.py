@@ -20,26 +20,32 @@ class CurrencyAgent(BaseAgent):
         ticker = TICKERS["usd_inr"]
         try:
             t = yf.Ticker(ticker)
-            hist = t.history(period="2d")
+            hist = t.history(period="5d")
 
             if hist.empty:
                 info = t.info
                 price = info.get("regularMarketPrice") or info.get("previousClose")
                 if price is not None:
                     prev = info.get("previousClose", price)
-                    direction = "strengthening" if price <= prev else "weakening"
+                    pct = (price - prev) / prev if prev else 0
+                    if pct < -0.0002:
+                        direction = "strengthening"
+                    elif pct > 0.0002:
+                        direction = "weakening"
+                    else:
+                        direction = "flat"
                     results["usd_inr"] = self._make_result(
                         label="USD/INR",
                         value=f"{price:.4f}",
                         change=self._pct_change(price, prev),
-                        direction="bullish" if price <= prev else "bearish",
+                        direction="bullish" if direction == "strengthening" else "bearish" if direction == "weakening" else "neutral",
                         details=f"Prev: {prev:.4f} | Lower USD/INR = stronger rupee = bullish",
                         source="yfinance",
                     )
                     results["direction"] = self._make_result(
                         label="Direction",
                         value=direction.capitalize(),
-                        direction="bullish" if direction == "strengthening" else "bearish",
+                        direction="bullish" if direction == "strengthening" else "bearish" if direction == "weakening" else "neutral",
                         details=f"Rupee is {direction} vs USD",
                         source="yfinance",
                     )
@@ -56,19 +62,25 @@ class CurrencyAgent(BaseAgent):
             current = float(latest["Close"])
             prev_close = float(hist.iloc[-2]["Close"]) if len(hist) > 1 else current
 
-            direction = "strengthening" if current <= prev_close else "weakening"
+            pct = (current - prev_close) / prev_close if prev_close else 0
+            if pct < -0.0002:
+                direction = "strengthening"
+            elif pct > 0.0002:
+                direction = "weakening"
+            else:
+                direction = "flat"
             results["usd_inr"] = self._make_result(
                 label="USD/INR",
                 value=f"{current:.4f}",
                 change=self._pct_change(current, prev_close),
-                direction="bullish" if current <= prev_close else "bearish",
+                direction="bullish" if direction == "strengthening" else "bearish" if direction == "weakening" else "neutral",
                 details=f"Prev: {prev_close:.4f} | Lower = stronger rupee",
                 source="yfinance",
             )
             results["direction"] = self._make_result(
                 label="Direction",
                 value=direction.capitalize(),
-                direction="bullish" if direction == "strengthening" else "bearish",
+                direction="bullish" if direction == "strengthening" else "bearish" if direction == "weakening" else "neutral",
                 details=f"Rupee is {direction} vs USD | Steep fall triggers FII selling",
                 source="yfinance",
             )

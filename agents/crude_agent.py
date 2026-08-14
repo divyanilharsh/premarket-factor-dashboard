@@ -55,7 +55,7 @@ class CrudeAgent(BaseAgent):
     def _fetch_yf_quote(self, key: str, label: str, ticker: str) -> FactorResult:
         try:
             t = yf.Ticker(ticker)
-            hist = t.history(period="2d")
+            hist = t.history(period="5d")
             if hist.empty:
                 info = t.info
                 price = info.get("regularMarketPrice") or info.get("previousClose")
@@ -65,7 +65,7 @@ class CrudeAgent(BaseAgent):
                         label=label,
                         value=f"${price:.2f}",
                         change=self._pct_change(price, prev),
-                        direction=self._compute_direction(price, prev, bullish_up=False),
+                        direction=self._compute_direction(price, prev, bullish_up=False, threshold=0.0002),
                         details=f"Prev close: ${prev:.2f} | Higher crude = bearish for India (net importer)",
                         source="yfinance",
                     )
@@ -82,7 +82,7 @@ class CrudeAgent(BaseAgent):
                 label=label,
                 value=f"${current:.2f}",
                 change=self._pct_change(current, prev_close),
-                direction=self._compute_direction(current, prev_close, bullish_up=False),
+                direction=self._compute_direction(current, prev_close, bullish_up=False, threshold=0.0002),
                 details=f"Prev close: ${prev_close:.2f} | Higher crude = bearish for India (net importer)",
                 source="yfinance",
             )

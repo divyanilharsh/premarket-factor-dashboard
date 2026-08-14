@@ -50,7 +50,7 @@ class GlobalMarketsAgent(BaseAgent):
     def _fetch_quote(self, label: str, ticker: str) -> FactorResult:
         try:
             t = yf.Ticker(ticker)
-            hist = t.history(period="2d")
+            hist = t.history(period="5d")
             if hist.empty:
                 info = t.info
                 price = info.get("regularMarketPrice") or info.get("previousClose")
@@ -92,7 +92,7 @@ class GlobalMarketsAgent(BaseAgent):
         for ticker in [TICKERS["sgx_nifty"], TICKERS["gift_nifty"]]:
             try:
                 t = yf.Ticker(ticker)
-                hist = t.history(period="2d")
+                hist = t.history(period="5d")
                 if not hist.empty:
                     latest = hist.iloc[-1]
                     current = float(latest["Close"])
