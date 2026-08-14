@@ -31,6 +31,7 @@ class GeopoliticsAgent(BaseAgent):
             headlines = self._fetch_fresh(query)
             tone = assess_headline_tone(headlines)
 
+            newest = "?"
             if headlines:
                 parts = []
                 for h in headlines[:2]:
@@ -51,7 +52,7 @@ class GeopoliticsAgent(BaseAgent):
 
             results[key] = self._make_result(
                 label=label,
-                value=tone.capitalize(),
+                value=f"{tone.capitalize()} ({newest})",
                 direction=direction,
                 details=summary,
                 source="google_news_rss",
@@ -59,7 +60,7 @@ class GeopoliticsAgent(BaseAgent):
             )
 
         cache_data = {k: v.to_dict() for k, v in results.items()}
-        self._save_cache(cache_data, ttl_hours=0.5)
+        self._save_cache(cache_data)
         return results
 
     def _fetch_fresh(self, query: str) -> list:

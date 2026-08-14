@@ -11,7 +11,7 @@ from utils.news_scraper import fetch_news_headlines, assess_headline_tone
 
 class MacroAgent(BaseAgent):
     agent_name = "macro"
-    cache_ttl_hours = 6
+    cache_ttl_hours = 3
 
     def fetch(self) -> dict[str, FactorResult]:
         cache = self._load_cache()
@@ -39,7 +39,7 @@ class MacroAgent(BaseAgent):
         )
 
         cache_data = {k: v.to_dict() for k, v in results.items()}
-        self._save_cache(cache_data, ttl_hours=3)
+        self._save_cache(cache_data)
         return results
 
     def _fetch_rbi_repo(self) -> FactorResult:
@@ -89,8 +89,19 @@ class MacroAgent(BaseAgent):
         if data and data.get("summary"):
             bal = data.get("balance")
             value = f"${bal:,.1f} B" if bal is not None else "N/A"
-            details = f"Exports ${data.get('exports') or '?':,.1f}B / Imports ${data.get('imports') or '?':,.1f}B. " if data.get("exports") else ""
-            details += data["summary"][:250]
+            ex = data.get("exports")
+            im = data.get("imports")
+            ex_prev = data.get("exports_prev")
+            im_prev = data.get("imports_prev")
+            if ex is not None and im is not None:
+                details = f"Exports ${ex:,.1f}B / Imports ${im:,.1f}B. "
+                if ex_prev is not None and im_prev is not None:
+                    old_bal = ex_prev - im_prev
+                    details += (f"Prev month: exports ${ex_prev:,.1f}B, imports ${im_prev:,.1f}B. "
+                                f"Deficit {'widening' if bal < old_bal else 'narrowing'}. ")
+                details += data["summary"][:250]
+            else:
+                details = data["summary"][:250]
             return self._make_result(
                 label="Trade Balance / CAD",
                 value=value,

@@ -93,8 +93,8 @@ def fetch_inflation() -> Optional[dict]:
     if not summary:
         return None
     m = re.search(
-        r"rate\s+(?:surged|rose|increased|fell|eased|declined|slowed|accelerated)\s+to\s+([\d.]+)%"
-        r"(?:[^.]*?)\s+from\s+([\d.]+)%", summary, re.I)
+        r"(?:surged|rose|increased|fell|eased|declined|slowed|accelerated)\s+to\s+([\d.]+)%"
+        r".{0,120}?\s+from\s+([\d.]+)%", summary, re.I)
     current = prev = None
     if m:
         try:
@@ -120,17 +120,27 @@ def fetch_trade_balance() -> Optional[dict]:
         return None
     exports = None
     imports = None
-    m = re.search(r"to \$([\d.]+)\s*billion", exports_summary, re.I)
+    exports_prev = None
+    imports_prev = None
+    m = re.search(r"to\s+\$?([\d.]+)\s*(?:USD\s*)?Billion.{0,80}?\s+from\s+\$?([\d.]+)\s*(?:USD\s*)?Billion",
+                  exports_summary, re.I)
+    if not m:
+        m = re.search(r"to\s+\$?([\d.]+)\s*(?:USD\s*)?Billion", exports_summary, re.I)
     if m:
         try:
             exports = float(m.group(1))
-        except ValueError:
+            exports_prev = float(m.group(2)) if len(m.groups()) > 1 and m.group(2) else None
+        except (ValueError, IndexError):
             exports = None
-    m = re.search(r"to \$([\d.]+)\s*billion", imports_summary, re.I)
+    m = re.search(r"to\s+\$?([\d.]+)\s*(?:USD\s*)?Billion.{0,80}?\s+from\s+\$?([\d.]+)\s*(?:USD\s*)?Billion",
+                  imports_summary, re.I)
+    if not m:
+        m = re.search(r"to\s+\$?([\d.]+)\s*(?:USD\s*)?Billion", imports_summary, re.I)
     if m:
         try:
             imports = float(m.group(1))
-        except ValueError:
+            imports_prev = float(m.group(2)) if len(m.groups()) > 1 and m.group(2) else None
+        except (ValueError, IndexError):
             imports = None
     balance = None
     if exports is not None and imports is not None:
@@ -141,6 +151,8 @@ def fetch_trade_balance() -> Optional[dict]:
     return {
         "exports": exports,
         "imports": imports,
+        "exports_prev": exports_prev,
+        "imports_prev": imports_prev,
         "balance": balance,
         "direction": direction,
         "summary": f"Exports: {exports_summary[:160]} | Imports: {imports_summary[:160]}",
