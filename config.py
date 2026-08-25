@@ -38,7 +38,8 @@ TICKERS = {
     "hang_seng": "^HSI",
     "shanghai": "000001.SS",
     "sgx_nifty": "^NSEI",
-    "gift_nifty": "SGXNIFTY.BO",
+    "gift_nifty": "",  # no reliable Yahoo ticker (SGXNIFTY.BO is delisted/404);
+                       # real GIFT Nifty comes from the NSE GIFT API (primary)
     "tnx": "^TNX",
     "dxy": "DX-Y.NYB",
 }

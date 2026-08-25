@@ -1,11 +1,14 @@
 import json
 import os
 import time
+from datetime import datetime, timezone, timedelta
 
 from agents.base_agent import BaseAgent, FactorResult
 from config import CACHE_DIR
 from utils.nse_scraper import get_fii_dii_data, get_all_indices
 from utils.news_scraper import fetch_news_headlines
+
+_IST = timezone(timedelta(hours=5, minutes=30))
 
 
 class FlowsAgent(BaseAgent):
@@ -91,11 +94,17 @@ class FlowsAgent(BaseAgent):
             fii_net_val if fii_net_val is not None else 0)
 
         fii_history = self._read_fii_history()
+        # Keep ONE entry per IST calendar day — same-day duplicate runs used
+        # to inflate the "consecutive days" streak (e.g. 3 runs on one day
+        # counted as 3 days of selling).
+        today_key = datetime.now(_IST).strftime("%Y-%m-%d")
+        fii_history = [h for h in fii_history
+                       if datetime.fromtimestamp(h["ts"], _IST).strftime("%Y-%m-%d") != today_key]
         fii_history.append({
             "ts": time.time(),
             "fii_net": fii_net_val if fii_net_val is not None else 0,
         })
-        fii_history = fii_history[-10:]
+        fii_history = self._dedupe_by_day(fii_history)[-30:]
         self._write_fii_history(fii_history)
 
         trend = self._compute_fii_trend(fii_history)
@@ -209,7 +218,20 @@ class FlowsAgent(BaseAgent):
         except Exception:
             pass
 
+    @staticmethod
+    def _dedupe_by_day(history: list) -> list:
+        """Keep only the last entry per IST calendar day, in chronological order."""
+        by_day = {}
+        for h in history:
+            try:
+                day = datetime.fromtimestamp(h["ts"], _IST).strftime("%Y-%m-%d")
+            except (KeyError, TypeError, OSError, ValueError, OverflowError):
+                continue
+            by_day[day] = h  # later entries overwrite earlier same-day ones
+        return [by_day[d] for d in sorted(by_day)]
+
     def _compute_fii_trend(self, history: list) -> dict:
+        history = self._dedupe_by_day(history)
         if len(history) < 2:
             return {
                 "summary": "Insufficient data",

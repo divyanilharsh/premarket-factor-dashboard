@@ -89,7 +89,11 @@ class GlobalMarketsAgent(BaseAgent):
         gift = self._fetch_gift_nifty_nse()
         if gift:
             return gift
-        for ticker in [TICKERS["sgx_nifty"], TICKERS["gift_nifty"]]:
+        # Fallback: SGXNIFTY.BO is delisted (Yahoo 404), so only try a real
+        # ticker — ^NSEI is Nifty 50 spot, NOT a pre-market GIFT signal.
+        for ticker in [TICKERS.get("sgx_nifty"), TICKERS.get("gift_nifty")]:
+            if not ticker:
+                continue
             try:
                 t = yf.Ticker(ticker)
                 hist = t.history(period="5d")
@@ -102,7 +106,7 @@ class GlobalMarketsAgent(BaseAgent):
                         value=f"{current:,.2f}",
                         change=self._pct_change(current, prev_close),
                         direction=self._compute_direction(current, prev_close),
-                        details=f"India open gap indicator. Prev: {prev_close:,.2f}",
+                        details=f"Nifty 50 spot (proxy — NSE GIFT API down). Prev: {prev_close:,.2f}",
                         source="yfinance",
                     )
             except Exception:
