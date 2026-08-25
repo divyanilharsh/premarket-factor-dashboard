@@ -49,9 +49,12 @@ class FlowsAgent(BaseAgent):
         try:
             fii_net_val = None
             dii_net_val = None
+            as_of = None
             for item in fii_data:
                 cat = item.get("category", "")
                 val_str = item.get("netValue", "0")
+                if as_of is None and item.get("date"):
+                    as_of = str(item.get("date"))
                 try:
                     val = float(val_str.replace(",", ""))
                 except (ValueError, TypeError):
@@ -69,18 +72,19 @@ class FlowsAgent(BaseAgent):
             fii_dir = "bullish" if fii_net_val > 0 else "bearish" if fii_net_val < 0 else "neutral"
             dii_dir = "bullish" if dii_net_val > 0 else "bearish" if dii_net_val < 0 else "neutral"
 
+            date_note = f" (NSE provisional, {as_of})" if as_of else ""
             results["fii_net"] = self._make_result(
                 label="FII Net Buy/Sell",
                 value=f"₹{fii_net_val:,.0f} Cr",
                 direction=fii_dir,
-                details=f"{'Net buying = liquidity boost' if fii_net_val > 0 else 'Net selling = bearish pressure'}",
+                details=f"{'Net buying = liquidity boost' if fii_net_val > 0 else 'Net selling = bearish pressure'}{date_note}",
                 source="nse",
             )
             results["dii_net"] = self._make_result(
                 label="DII Net Buy/Sell",
                 value=f"₹{dii_net_val:,.0f} Cr",
                 direction=dii_dir,
-                details=f"{'DII buying cushions FII selling' if dii_net_val > 0 else 'DII also selling = double bearish'}",
+                details=f"{'DII buying cushions FII selling' if dii_net_val > 0 else 'DII also selling = double bearish'}{date_note}",
                 source="nse",
             )
         except Exception as e:
