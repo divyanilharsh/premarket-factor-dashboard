@@ -1,5 +1,34 @@
+import re
 from datetime import datetime, timezone, timedelta
 from typing import Optional
+
+
+def extract_number(text) -> Optional[float]:
+    """Extract the first usable numeric value from a display string.
+
+    Handles currency symbols, thousands separators, percent signs and units.
+    Returns None when the value carries no real figure (N/A, error, None).
+    """
+    if text is None:
+        return None
+    if isinstance(text, (int, float)) and not isinstance(text, bool):
+        return float(text)
+    if not isinstance(text, str):
+        return None
+    low = text.lower()
+    if any(token in low for token in (
+        "n/a", " na ", "err", "unavailable", " none ", "no data",
+        "not avail", "n.a", "closed", "loading", "---",
+    )):
+        return None
+    # First signed number, tolerating commas as thousand separators.
+    match = re.search(r"-?\d[\d,]*(?:\.\d+)?", text)
+    if not match:
+        return None
+    try:
+        return float(match.group(0).replace(",", ""))
+    except ValueError:
+        return None
 
 
 def format_timestamp(ts: Optional[float] = None) -> str:

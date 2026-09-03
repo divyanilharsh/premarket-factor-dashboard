@@ -19,6 +19,7 @@ AGENTS_MAP = {
     "8. EARNINGS / CORPORATE NEWS": "agents.earnings_agent:EarningsAgent",
     "9. SECTOR SIGNALS": "agents.sectors_agent:SectorsAgent",
     "10. SENTIMENT / TECHNICAL": "agents.sentiment_agent:SentimentAgent",
+    "11. OPTION CHAIN - NIFTY": "agents.option_chain_agent:OptionChainAgent",
 }
 
 AGENT_NAMES = {
@@ -32,7 +33,10 @@ AGENT_NAMES = {
     "8. EARNINGS / CORPORATE NEWS": "earnings",
     "9. SECTOR SIGNALS": "sectors",
     "10. SENTIMENT / TECHNICAL": "sentiment",
+    "11. OPTION CHAIN - NIFTY": "option_chain",
 }
+
+N_AGENTS = len(AGENTS_MAP)
 
 
 def _import_agent(import_path: str):
@@ -74,7 +78,7 @@ class App:
             self.dashboard._status_bar.set_text("Refresh already in progress...")
             return
         self._refreshing = True
-        self.dashboard.set_agent_progress(0, 10)
+        self.dashboard.set_agent_progress(0, N_AGENTS)
         self._error_count = 0
         t = threading.Thread(target=self._run_agents_safe, daemon=True)
         t.start()
@@ -112,7 +116,7 @@ class App:
                 for f, agent in futures_map.items():
                     if not f.done():
                         agent.error = "Timeout after 90s"
-                self._result_queue.put(("progress", 10, all_instances[-1]))
+                self._result_queue.put(("progress", N_AGENTS, all_instances[-1]))
 
         for cat_name, agent in agent_instances.items():
             if cat_name == "1. CRUDE OIL" and agent.results:
@@ -144,7 +148,7 @@ class App:
             self._run_agents()
         except Exception as e:
             traceback.print_exc()
-            self._result_queue.put(("done", {}, 10))
+            self._result_queue.put(("done", {}, N_AGENTS))
             self._result_queue.put(("error", str(e)))
 
     def _poll_queue(self):
@@ -153,7 +157,7 @@ class App:
                 msg = self._result_queue.get_nowait()
                 if msg[0] == "progress":
                     _, completed, agent = msg
-                    self.dashboard.set_agent_progress(completed, 10)
+                    self.dashboard.set_agent_progress(completed, N_AGENTS)
                 elif msg[0] == "done":
                     _, results, error_count = msg
                     self._refreshing = False
@@ -162,10 +166,10 @@ class App:
                         timestamp=format_timestamp(),
                         market_open=is_market_open(),
                     )
-                    self.dashboard.set_ready(error_count)
+                    self.dashboard.set_ready(error_count, N_AGENTS)
                 elif msg[0] == "error":
                     self._refreshing = False
-                    self.dashboard.set_error(msg[1])
+                    self.dashboard.set_error(msg[1], N_AGENTS)
         except queue.Empty:
             pass
         self.root.after(500, self._poll_queue)

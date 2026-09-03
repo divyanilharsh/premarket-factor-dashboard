@@ -7,6 +7,7 @@ import re
 from config import FACTORS_JSON, FACTORS_FILE
 from agents.base_agent import FactorResult
 from utils.helpers import is_market_open
+from gui.live_charts import LiveChartPanel
 from gui.widgets import (
     CategorySection, SentimentMeter, StatusBar,
     BG_DARK, BG_CARD, FG_PRIMARY, FG_SECONDARY, FG_ACCENT,
@@ -212,6 +213,12 @@ class Dashboard:
     def _build_sections(self):
         placeholder = FactorResult(label="Loading...", value="--", direction="neutral",
                                    status="ok")
+
+        # Real-time chart of all data points, plotted at every refresh.
+        self._live_chart = LiveChartPanel(self._scroll_frame,
+                                          "REAL-TIME CHARTS (ALL DATA)")
+        self._live_chart.pack(fill=tk.X, pady=(0, 4), padx=2)
+
         for cat in self.categories:
             items = [(item["id"], placeholder) for item in cat["items"]]
             section = CategorySection(self._scroll_frame, cat["name"], items)
@@ -293,6 +300,14 @@ class Dashboard:
                 section.update_results(mapped)
 
         self._update_sentiment()
+        self._update_live_chart(all_results, timestamp)
+
+    def _update_live_chart(self, all_results: dict, timestamp: str = ""):
+        try:
+            if hasattr(self, "_live_chart"):
+                self._live_chart.update_series(all_results, timestamp)
+        except Exception:
+            pass
 
     def _update_sentiment(self):
         bullish = 0
@@ -313,16 +328,16 @@ class Dashboard:
         self._status_bar.set_progress(completed, total)
         self._status_bar.set_text(f"Fetching data... {completed}/{total} agents")
 
-    def set_ready(self, error_count: int = 0):
+    def set_ready(self, error_count: int = 0, total: int = 10):
         if error_count > 0:
             self._status_bar.set_text(f"Ready — {error_count} agent(s) had errors")
         else:
             self._status_bar.set_text("All agents completed")
-        self._status_bar.set_progress(10, 10)
+        self._status_bar.set_progress(total, total)
 
-    def set_error(self, msg: str = ""):
+    def set_error(self, msg: str = "", total: int = 10):
         self._status_bar.set_text(f"Error: {msg}")
-        self._status_bar.set_progress(0, 10)
+        self._status_bar.set_progress(0, total)
 
     def _load_check_states(self):
         for cat_name, section in self.sections.items():

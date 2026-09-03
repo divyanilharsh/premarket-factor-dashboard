@@ -3,5 +3,6 @@ __pycache__/
 data/cache/
 data/factors.json
 data/report_*.csv
+data/live_history.json
 .venv/
 venv/

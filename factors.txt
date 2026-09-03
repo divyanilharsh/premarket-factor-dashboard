@@ -73,3 +73,13 @@
 - [ ] Weekly / monthly options expiry day [Expiry can cause whipsaw, sharp swings, premium distortion = high volatility]
 - [ ] Block deals / bulk deals activity [Large off-market trades move prices sharply; watch pre-market deal reports]
 - [ ] Market breadth expectations / overnight news tone [Broad positive news = strong open; mixed = cautious]
+
+## 11. OPTION CHAIN - NIFTY
+- [ ] Total Open Interest (OI) [High OI = strong market interest; OI at OTM puts = support, at OTM calls = supply]
+- [ ] Change in Open Interest (Chng in OI) [Price↑ + ΔOI↑ = long buildup (bull); price↓ + ΔOI↑ = short buildup (bear)]
+- [ ] Highest Call Open Interest [Max call writers = resistance; fresh writing = stronger ceiling, unwinding = breakout risk]
+- [ ] Highest Put Open Interest [Max put writers = support; fresh writing = stronger floor, unwinding = capitulation]
+- [ ] Put-Call Ratio (PCR) [>1.3 extreme bull (contrarian top); 0.9-1.3 bull; 0.7-0.9 neutral; 0.5-0.7 bear; <0.5 extreme bear (bounce)]
+- [ ] Near-the-Money PCR (ATM ±4 strikes) [PCR over ±4 strikes from spot = latest ATM sentiment pulse]
+- [ ] Implied Volatility (IV) [High IV = expensive options/fear; low IV = cheap; falling IV in rally = bullish, spikes = panic]
+- [ ] Option-Chain Bias [Weighted composite of PCR, ΔOI quadrants and call/put wall building — overall bull/bear/neutral]
