@@ -240,7 +240,8 @@ class Dashboard:
 
         for cat in self.categories:
             items = [(item["id"], placeholder) for item in cat["items"]]
-            section = CategorySection(self._scroll_frame, cat["name"], items)
+            section = CategorySection(self._scroll_frame, cat["name"], items,
+                                      on_check_cb=self._on_factor_toggled)
             section.pack(fill=tk.X, pady=(4, 2), padx=2)
             self.sections[cat["name"]] = section
 
@@ -342,19 +343,29 @@ class Dashboard:
             pass
 
     def _update_sentiment(self):
+        """Bullish % over only the factors whose checklist boxes are ticked."""
         bullish = 0
         bearish = 0
-        for cat_name, results in self.all_results.items():
-            for r in results.values():
-                if r.direction == "bullish":
+        for cat_name, section in self.sections.items():
+            for item in section.items.values():
+                try:
+                    if not item.checked.get():
+                        continue
+                except Exception:
+                    continue
+                d = item.factor_result.direction
+                if d == "bullish":
                     bullish += 1
-                elif r.direction == "bearish":
+                elif d == "bearish":
                     bearish += 1
         total = bullish + bearish
         if total == 0:
             self._sentiment_meter.set_value(50)
         else:
             self._sentiment_meter.set_value((bullish / total) * 100)
+
+    def _on_factor_toggled(self, factor_id: str, checked: bool):
+        self._update_sentiment()
 
     def set_agent_progress(self, completed: int, total: int):
         self._status_bar.set_progress(completed, total)
