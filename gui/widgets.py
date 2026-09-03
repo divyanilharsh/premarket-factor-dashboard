@@ -69,20 +69,25 @@ class ChecklistItem(ttk.Frame):
                            font=("Segoe UI", 9), anchor=tk.W)
         val_lbl.pack(side=tk.LEFT, padx=(0, 8))
 
+        # Flexible spacer so right-hand badges anchor to the card edge and the
+        # card visually spans the full width on wide windows.
+        spacer = tk.Frame(content, bg=BG_CARD)
+        spacer.pack(side=tk.LEFT, fill=tk.X, expand=True)
+
         if self.factor_result.status == "manual":
             manual_badge = tk.Label(content, text="MANUAL", fg="#ff9800", bg=BG_CARD,
                                     font=("Segoe UI", 7, "bold"))
-            manual_badge.pack(side=tk.LEFT, padx=(0, 4))
+            manual_badge.pack(side=tk.RIGHT, padx=(0, 4))
 
         if self.factor_result.stale:
             stale_badge = tk.Label(content, text="STALE", fg="#ff1744", bg=BG_CARD,
                                    font=("Segoe UI", 7, "bold"))
-            stale_badge.pack(side=tk.LEFT, padx=(0, 4))
+            stale_badge.pack(side=tk.RIGHT, padx=(0, 4))
 
         dir_lbl = tk.Label(content, text=self.factor_result.direction.upper(),
                            fg=color, bg=BG_CARD,
                            font=("Segoe UI", 8, "bold"))
-        dir_lbl.pack(side=tk.LEFT)
+        dir_lbl.pack(side=tk.RIGHT)
 
         if self.factor_result.details:
             def enter(e):

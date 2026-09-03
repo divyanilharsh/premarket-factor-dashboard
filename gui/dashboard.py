@@ -110,9 +110,9 @@ class Dashboard:
     def __init__(self, root):
         self.root = root
         self.root.title("Pre-Market Factor Dashboard")
-        self.root.geometry("520x800")
+        self.root.geometry("1040x820")
         self.root.configure(bg=BG_DARK)
-        self.root.minsize(480, 700)
+        self.root.minsize(700, 700)
 
         self._setup_theme()
         self.categories = parse_factors_txt(FACTORS_FILE)
@@ -189,6 +189,8 @@ class Dashboard:
         self._canvas.create_window((0, 0), window=self._scroll_frame,
                                    anchor=tk.NW, tags="inner")
         self._canvas.configure(yscrollcommand=scrollbar.set)
+        # Stretch the inner frame so content fills the whole window width.
+        self._canvas.bind("<Configure>", self._on_canvas_resize)
 
         self._canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
@@ -200,6 +202,10 @@ class Dashboard:
         self._status_bar.pack(fill=tk.X, padx=8, pady=(4, 6))
 
         self._build_sections()
+
+    def _on_canvas_resize(self, event):
+        self._canvas.itemconfigure("inner", width=event.width)
+        self._canvas.configure(scrollregion=self._canvas.bbox("all"))
 
     def _bind_mousewheel(self, event):
         self._canvas.bind_all("<MouseWheel>", self._on_mousewheel)
