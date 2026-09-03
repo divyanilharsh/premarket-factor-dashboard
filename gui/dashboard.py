@@ -7,7 +7,7 @@ import re
 from config import FACTORS_JSON, FACTORS_FILE
 from agents.base_agent import FactorResult
 from utils.helpers import is_market_open
-from gui.live_charts import LiveChartPanel
+from gui.live_charts import CategorySparkChart, LiveHistoryStore
 from gui.widgets import (
     CategorySection, SentimentMeter, StatusBar,
     BG_DARK, BG_CARD, FG_PRIMARY, FG_SECONDARY, FG_ACCENT,
@@ -214,16 +214,34 @@ class Dashboard:
         placeholder = FactorResult(label="Loading...", value="--", direction="neutral",
                                    status="ok")
 
-        # Real-time chart of all data points, plotted at every refresh.
-        self._live_chart = LiveChartPanel(self._scroll_frame,
-                                          "REAL-TIME CHARTS (ALL DATA)")
-        self._live_chart.pack(fill=tk.X, pady=(0, 4), padx=2)
+        # One compact live chart below every data section, tracking its factors.
+        self._chart_store = LiveHistoryStore()
+        self.section_charts: dict[str, CategorySparkChart] = {}
+
+        charts_bar = tk.Frame(self._scroll_frame, bg=BG_DARK)
+        charts_bar.pack(fill=tk.X, pady=(2, 4))
+        tk.Label(charts_bar, text="REAL-TIME CHARTS (one per category)",
+                 bg=BG_DARK, fg=FG_ACCENT,
+                 font=("Segoe UI", 10, "bold")).pack(side=tk.LEFT, padx=2)
+        clear_btn = tk.Button(charts_bar, text="Clear charts",
+                              bg=BG_CARD, fg=FG_PRIMARY,
+                              font=("Segoe UI", 8), bd=0, relief=tk.FLAT,
+                              padx=8, pady=2,
+                              activebackground="#0f3460",
+                              activeforeground=FG_ACCENT,
+                              command=self._clear_charts)
+        clear_btn.pack(side=tk.RIGHT, padx=2)
 
         for cat in self.categories:
             items = [(item["id"], placeholder) for item in cat["items"]]
             section = CategorySection(self._scroll_frame, cat["name"], items)
-            section.pack(fill=tk.X, pady=4, padx=2)
+            section.pack(fill=tk.X, pady=(4, 2), padx=2)
             self.sections[cat["name"]] = section
+
+            chart = CategorySparkChart(self._scroll_frame, cat["name"],
+                                       self._chart_store)
+            chart.pack(fill=tk.X, pady=(0, 6), padx=2)
+            self.section_charts[cat["name"]] = chart
 
         load_btn = tk.Button(self._scroll_frame, text="Load Checklist",
                              bg=BG_CARD, fg=FG_PRIMARY,
@@ -232,6 +250,12 @@ class Dashboard:
                              activeforeground=FG_ACCENT,
                              command=self._load_check_states)
         load_btn.pack(pady=6)
+
+    def _clear_charts(self):
+        self._chart_store.clear()
+        for chart in self.section_charts.values():
+            chart.redraw()
+        self._status_bar.set_text("Chart history cleared")
 
     def set_on_refresh(self, callback):
         self._refresh_btn.configure(command=callback)
@@ -304,8 +328,10 @@ class Dashboard:
 
     def _update_live_chart(self, all_results: dict, timestamp: str = ""):
         try:
-            if hasattr(self, "_live_chart"):
-                self._live_chart.update_series(all_results, timestamp)
+            if hasattr(self, "_chart_store"):
+                self._chart_store.append(all_results, timestamp)
+                for chart in getattr(self, "section_charts", {}).values():
+                    chart.redraw()
         except Exception:
             pass
 
