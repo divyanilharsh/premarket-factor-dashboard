@@ -1,0 +1,28 @@
+{
+  "tnx": {
+    "label": "10-yr US Treasury Yield (^TNX)",
+    "value": "4.96%",
+    "change": "-0.70%",
+    "direction": "bullish",
+    "status": "ok",
+    "details": "Prev close: 5.00% | Rising = bearish for EM",
+    "source": "yfinance",
+    "last_updated": "2026-09-23 15:15 IST",
+    "manual": false,
+    "stale": false
+  },
+  "dxy": {
+    "label": "US Dollar Index (DXY)",
+    "value": "100.85",
+    "change": "+0.41%",
+    "direction": "bearish",
+    "status": "ok",
+    "details": "Prev close: 100.43 | Rising = bearish for EM",
+    "source": "yfinance",
+    "last_updated": "2026-09-23 15:15 IST",
+    "manual": false,
+    "stale": false
+  },
+  "_timestamp": 1790156745.7508101,
+  "_cache_ttl_hours": 0.25
+}

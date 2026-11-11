@@ -1,0 +1,76 @@
+{
+  "major_results": {
+    "label": "Major Results Due Today",
+    "value": "1 result(s)",
+    "change": "",
+    "direction": "neutral",
+    "status": "ok",
+    "details": "Annu Projects (Q1 FY26-27) | Beats lift index; misses drag",
+    "source": "moneycontrol",
+    "last_updated": "2026-09-23 14:35 IST",
+    "manual": false,
+    "stale": false
+  },
+  "earnings_beats": {
+    "label": "Earnings Beats / Misses",
+    "value": "Bullish",
+    "change": "",
+    "direction": "bullish",
+    "status": "ok",
+    "details": "NSE Q4 FY26 Results: What Really Happened and What Lies Ahea | BSE, other capital market shares rise up to 3% on strong NSE",
+    "source": "google_news_rss",
+    "last_updated": "2026-09-23 14:35 IST",
+    "manual": true,
+    "stale": false
+  },
+  "order_wins": {
+    "label": "Order Wins / Deals",
+    "value": "Bullish",
+    "change": "",
+    "direction": "bullish",
+    "status": "ok",
+    "details": "Ceigall India Share Price Down Despite Rs 2,149 Cr MoRTH Dea | Deep Industries Wins ₹83.8 Cr ONGC Order for Gas Processing ",
+    "source": "google_news_rss",
+    "last_updated": "2026-09-23 14:35 IST",
+    "manual": true,
+    "stale": false
+  },
+  "govt_ofs": {
+    "label": "Government OFS / Divestment",
+    "value": "Check news",
+    "change": "",
+    "direction": "neutral",
+    "status": "manual",
+    "details": "Discounted OFS = supply pressure + liquidity drain = bearish",
+    "source": "google_news_rss",
+    "last_updated": "2026-09-23 14:35 IST",
+    "manual": true,
+    "stale": false
+  },
+  "ipo_listings": {
+    "label": "IPO Listings / New Issues",
+    "value": "Check news",
+    "change": "",
+    "direction": "neutral",
+    "status": "manual",
+    "details": "Big IPO absorbs market liquidity, adds volatility",
+    "source": "google_news_rss",
+    "last_updated": "2026-09-23 14:35 IST",
+    "manual": true,
+    "stale": false
+  },
+  "regulatory_orders": {
+    "label": "Regulatory / Compliance Orders",
+    "value": "Check news",
+    "change": "",
+    "direction": "neutral",
+    "status": "manual",
+    "details": "SEBI ban / governance risk hits stock + sector contagion",
+    "source": "google_news_rss",
+    "last_updated": "2026-09-23 14:35 IST",
+    "manual": true,
+    "stale": false
+  },
+  "_timestamp": 1790154355.0999055,
+  "_cache_ttl_hours": 1
+}

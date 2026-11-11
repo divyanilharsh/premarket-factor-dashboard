@@ -4,5 +4,8 @@ data/cache/
 data/factors.json
 data/report_*.csv
 data/live_history.json
+data/v2/market.db-wal
+data/v2/market.db-shm
+data/exports/*.tmp
 .venv/
 venv/

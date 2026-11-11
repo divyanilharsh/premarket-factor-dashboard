@@ -1,0 +1,100 @@
+{
+  "vix": {
+    "label": "India VIX",
+    "value": "10.24",
+    "change": "-6.91%",
+    "direction": "bullish",
+    "status": "ok",
+    "details": "High VIX (>20) = fear/weakness; low (<12) = complacency",
+    "source": "nse",
+    "last_updated": "2026-09-23 14:35 IST",
+    "manual": false,
+    "stale": false
+  },
+  "nifty_levels": {
+    "label": "Nifty Support/Resistance",
+    "value": "23,446",
+    "change": "+0.50%",
+    "direction": "neutral",
+    "status": "ok",
+    "details": "Prev close: 23,329 | H: 23,467 | L: 23,350 | Breakout above high = buy; breakdown below low = sell",
+    "source": "nse",
+    "last_updated": "2026-09-23 14:35 IST",
+    "manual": false,
+    "stale": false
+  },
+  "fii_fno": {
+    "label": "FII/DII F&O Positioning",
+    "value": "Provisional data available",
+    "change": "",
+    "direction": "neutral",
+    "status": "ok",
+    "details": "Heavy FII shorts = squeeze risk; longs = bullish. Cross-check FII net figure in FOREIGN FLOWS section.",
+    "source": "nse",
+    "last_updated": "2026-09-23 14:35 IST",
+    "manual": false,
+    "stale": false
+  },
+  "pcr": {
+    "label": "PCR / Max Pain",
+    "value": "PCR 1.15",
+    "change": "",
+    "direction": "neutral",
+    "status": "ok",
+    "details": "PCR: 1.15 | Max Pain: 23,400 | Falling PCR = bearish; heavy call OI = ceiling",
+    "source": "nse",
+    "last_updated": "2026-09-23 14:36 IST",
+    "manual": false,
+    "stale": false
+  },
+  "cas": {
+    "label": "SEBI CAS Distortions",
+    "value": "CAS rule active",
+    "change": "",
+    "direction": "neutral",
+    "status": "manual",
+    "details": "Closing Auction Session can cause artificial end-day spikes and next-day unwinding",
+    "source": "manual",
+    "last_updated": "2026-09-23 14:36 IST",
+    "manual": true,
+    "stale": false
+  },
+  "expiry": {
+    "label": "Expiry Day",
+    "value": "24 Sep 2026 (0d)",
+    "change": "",
+    "direction": "neutral",
+    "status": "warning",
+    "details": "Expiry can cause whipsaw, sharp swings, premium distortion",
+    "source": "calendar",
+    "last_updated": "2026-09-23 14:36 IST",
+    "manual": false,
+    "stale": false
+  },
+  "block_deals": {
+    "label": "Block / Bulk Deals",
+    "value": "None reported",
+    "change": "",
+    "direction": "neutral",
+    "status": "ok",
+    "details": "No block deals recorded today",
+    "source": "nse",
+    "last_updated": "2026-09-23 14:36 IST",
+    "manual": false,
+    "stale": false
+  },
+  "market_breadth": {
+    "label": "Market Breadth",
+    "value": "A:6987 D:2611",
+    "change": "",
+    "direction": "bullish",
+    "status": "ok",
+    "details": "Advance ratio: 72.8% | Broad positive breadth = strong open",
+    "source": "nse",
+    "last_updated": "2026-09-23 14:36 IST",
+    "manual": false,
+    "stale": false
+  },
+  "_timestamp": 1790154364.4040182,
+  "_cache_ttl_hours": 1
+}

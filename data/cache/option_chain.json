@@ -1,0 +1,100 @@
+{
+  "oi": {
+    "label": "Total Open Interest (OI)",
+    "value": "5,960,902",
+    "change": "",
+    "direction": "neutral",
+    "status": "ok",
+    "details": "Total NIFTY OI: 2,777,058 calls + 3,183,844 puts. High OI = strong institutional interest; OI at OTM puts = support floor, at OTM calls = overhead supply.",
+    "source": "nse",
+    "last_updated": "2026-09-23 14:35 IST",
+    "manual": false,
+    "stale": false
+  },
+  "chng_oi": {
+    "label": "Change in Open Interest (Chng in OI)",
+    "value": "+1,709,934",
+    "change": "",
+    "direction": "bullish",
+    "status": "ok",
+    "details": "Net ΔOI +1,709,934 | long buildup (price ↑, OI ↑). Price ↑ with ΔOI ↑ = long buildup; price ↓ with ΔOI ↑ = short buildup.",
+    "source": "nse",
+    "last_updated": "2026-09-23 14:35 IST",
+    "manual": false,
+    "stale": false
+  },
+  "highest_call": {
+    "label": "Highest Call Open Interest",
+    "value": "24,000 (OI 228,452)",
+    "change": "",
+    "direction": "bearish",
+    "status": "ok",
+    "details": "Max call writers at 24,000 = major resistance. resistance building (fresh call writing) (+10,962). Break above with ΔOI<0 = bullish.",
+    "source": "nse",
+    "last_updated": "2026-09-23 14:35 IST",
+    "manual": false,
+    "stale": false
+  },
+  "highest_put": {
+    "label": "Highest Put Open Interest",
+    "value": "23,400 (OI 270,164)",
+    "change": "",
+    "direction": "bullish",
+    "status": "ok",
+    "details": "Max put writers at 23,400 = major support. support building (fresh put writing) (+176,140). Break below with ΔOI<0 = bearish.",
+    "source": "nse",
+    "last_updated": "2026-09-23 14:35 IST",
+    "manual": false,
+    "stale": false
+  },
+  "pcr": {
+    "label": "Put-Call Ratio (PCR)",
+    "value": "1.15",
+    "change": "",
+    "direction": "bullish",
+    "status": "ok",
+    "details": "Total Put OI / Total Call OI = 1.15 — bullish / neutral drift. PCR>1.3 extreme bull (contrarian top), <0.5 extreme bear (contrarian bounce).",
+    "source": "nse",
+    "last_updated": "2026-09-23 14:35 IST",
+    "manual": false,
+    "stale": false
+  },
+  "atm_pcr": {
+    "label": "Near-the-Money PCR (ATM ±4 strikes)",
+    "value": "1.20",
+    "change": "",
+    "direction": "bullish",
+    "status": "ok",
+    "details": "PCR over ±4 strikes around spot 23,436 = 1.20 — bullish / neutral drift. More current/ATM-sensitive than the full-chain PCR; best pulse of who is defending the money.",
+    "source": "nse",
+    "last_updated": "2026-09-23 14:35 IST",
+    "manual": false,
+    "stale": false
+  },
+  "iv": {
+    "label": "Implied Volatility (IV)",
+    "value": "14.64%",
+    "change": "",
+    "direction": "neutral",
+    "status": "ok",
+    "details": "OI-weighted IV 14.64% (ATM 9.39%) | spot 23,436 | expiry 29-Sep-2026 | max pain 23,400. High IV = expensive options / fear; low IV = cheap. Falling IV during a rally = steady accumulation (bullish); IV spikes during a decline = panic put buying (bearish).",
+    "source": "nse",
+    "last_updated": "2026-09-23 14:35 IST",
+    "manual": false,
+    "stale": false
+  },
+  "bias": {
+    "label": "Option-Chain Bias",
+    "value": "BULLISH (+75%)",
+    "change": "",
+    "direction": "bullish",
+    "status": "ok",
+    "details": "Weighted composite of OI-positioning signals. Score +75% (strong). | PCR 1.15=bullish · ATM PCR 1.20=bullish · net ΔOI +631,186 · call wall ΔOI +10,962 · put wall ΔOI +176,140 · long buildup (price ↑, OI ↑). Extreme PCR readings are contrarian — fade the crowd.",
+    "source": "nse",
+    "last_updated": "2026-09-23 14:35 IST",
+    "manual": false,
+    "stale": false
+  },
+  "_timestamp": 1790154359.808199,
+  "_cache_ttl_hours": 1
+}

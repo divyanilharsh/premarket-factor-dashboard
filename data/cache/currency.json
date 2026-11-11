@@ -1,0 +1,28 @@
+{
+  "usd_inr": {
+    "label": "USD/INR",
+    "value": "95.7200",
+    "change": "+0.01%",
+    "direction": "neutral",
+    "status": "ok",
+    "details": "Prev: 95.7120 | Lower = stronger rupee",
+    "source": "yfinance",
+    "last_updated": "2026-09-23 15:15 IST",
+    "manual": false,
+    "stale": false
+  },
+  "direction": {
+    "label": "Direction",
+    "value": "Flat",
+    "change": "",
+    "direction": "neutral",
+    "status": "ok",
+    "details": "Rupee is flat vs USD | Steep fall triggers FII selling",
+    "source": "yfinance",
+    "last_updated": "2026-09-23 15:15 IST",
+    "manual": false,
+    "stale": false
+  },
+  "_timestamp": 1790156745.492431,
+  "_cache_ttl_hours": 0.25
+}

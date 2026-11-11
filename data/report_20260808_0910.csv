@@ -1,0 +1,54 @@
+﻿Category,Factor,Value,Change,Direction,Status,Details,Checked
+1. CRUDE OIL,Brent Crude (BZ=F),$82.27,-0.27%,bearish,ok,Prev close: $82.49,X
+1. CRUDE OIL,WTI Crude (CL=F),$77.08,-0.27%,bearish,ok,Prev close: $77.29,X
+1. CRUDE OIL,Direction,Bearish,,bearish,ok,Rising crude = bearish for India (net importer),X
+2. CURRENCY,USD/INR,95.2000,+0.13%,bearish,ok,Prev: 95.0773 | Lower = stronger rupee,X
+2. CURRENCY,Direction,Weakening,,bearish,ok,Rupee is weakening vs USD | Steep fall triggers FII selling,X
+3. FOREIGN FLOWS,FII Net Buy/Sell,₹480 Cr,,bullish,ok,Net buying = liquidity boost,X
+3. FOREIGN FLOWS,DII Net Buy/Sell,₹236 Cr,,bullish,ok,DII buying cushions FII selling,X
+3. FOREIGN FLOWS,DII Selling for OFS,OFS news present,,neutral,warning,OFS/divestment news: Why is the government offloading stake in LIC? | Explained - | India to sell up to 6.5% LIC stake in over 300 billion rupee. Primary mkt absorbs cash = secondary liquidity drain = bearish.,X
+3. FOREIGN FLOWS,FII Buying During Selloff,FII not net buying (480 Cr),,neutral,warning,Accumulation signal only when FII buy >500 Cr while Nifty falls >0.5%,X
+3. FOREIGN FLOWS,FII Consecutive Days Trend,Buying × 1 days,,bullish,ok,Last 6 trading days. Sustained trend > single-day noise.,X
+4. GLOBAL MARKETS,US Indices Overnight,"Dow Jones: 54,036.93 (+0.28%); S&P 500: 7,757.64 (+0.62%); Nasdaq: 26,690.62 (+1.30%)",,bullish,ok,"Prev close: 53,885.10 | Prev close: 7,709.96 | Prev close: 26,348.35",X
+4. GLOBAL MARKETS,Asian Markets This Morning,"Nikkei 225: 65,606.71 (-0.12%); Hang Seng: 25,668.03 (+0.54%); Shanghai Composite: 3,940.04 (+1.02%)",,bullish,ok,"Prev close: 65,683.26 | Prev close: 25,530.28 | Prev close: 3,900.35",X
+4. GLOBAL MARKETS,Global Risk Mood,Global Risk Mood: Risk-ON,,bullish,ok,5/6 major indices positive. Deep risk-off = bearish for EM; relief = bullish.,X
+4. GLOBAL MARKETS,SGX / GIFT Nifty Futures,"SGX / GIFT Nifty: 24,721.00 (+0.32%)",,bullish,ok,NSE GIFT Nifty futures (exp 25-Aug-2026). Day change: +79.50 pts | As of 08-Aug-2026 02:44 | Gap vs Nifty spot: +0.61%,X
+4. GLOBAL MARKETS,US Fed Rate Decision,Fed Rate Decision: Rate CUT leaning,,bullish,ok,"Recent: Divided Fed holds interest rates steady, but three members voted to hike - CNBC | Dovish = risk-on, bullish for EM",X
+4. GLOBAL MARKETS,Global Currency Interventions,Currency Interventions: Intervention flagged,,neutral,warning,"Recent: Japan’s yen intervention and unusual US support - OMFIF | Intervention shifts FX flows, adds volatility",X
+5. US BOND YIELDS / DOLLAR,10-yr US Treasury Yield (^TNX),4.66%,-0.21%,bullish,ok,Prev close: 4.67% | Rising = bearish for EM,X
+5. US BOND YIELDS / DOLLAR,US Dollar Index (DXY),99.60,-0.37%,bullish,ok,Prev close: 99.97 | Rising = bearish for EM,X
+6. GEOPOLITICS,Middle East / Oil Region Tensions,Bearish,,bearish,ok,"Newest: 6h ago | Oil Steadies as Hormuz Tensions Flare - Rigzone [6h ago, Rigzone] | World Faces Largest-Ever Oil Supply Disruption on Middl [15h ago, EnergyNow.com]",X
+6. GEOPOLITICS,Trade War / Tariffs,Bearish,,bearish,ok,"Newest: 1h ago | U.S. Senate passes Russia sanctions bill that seeks 100 [2h ago, The Hindu] | Trump Tariffs ‘Tortuous’ to Soybean Trade, China Diplom [10h ago, Bloomberg.com]",X
+6. GEOPOLITICS,Sanctions / Military Action,Neutral,,neutral,ok,"Newest: 8h ago | Russia’s war of aggression against Ukraine: EU lists fi [17h ago, consilium.europa.e] | Tensions between US and Iran escalated again - News On  [8h ago, News On AIR]",X
+6. GEOPOLITICS,US-India Tariff / Trade Action,Bearish,,bearish,ok,"Newest: 2h ago | White House confirms temporary 10 per cent tariff for I [6h ago, News On AIR] | U.S. Senate passes Russia sanctions bill that seeks 100 [2h ago, The Hindu]",X
+6. GEOPOLITICS,Peace-Talk Status (Ukraine/Russia),Bearish,,bearish,ok,"Newest: 9h ago | Russian and Ukrainian delegations conclude first day of [19h ago, News On AIR] | Istanbul 2.0? Kazakhstan Steps into the Ukraine War Dip [14h ago, Geopolitical Monit]",X
+7. MACRO DATA / POLICY,RBI Policy / Repo Rate,5.25%,,neutral,ok,"Stance: neutral. The Reserve Bank of India (RBI) left its key repo rate unchanged at 5.25% for the fourth consecutive meeting in August and maintained a neutral stance amid a weakening rupee. The decision was in line with expectations, a",X
+7. MACRO DATA / POLICY,RBI Forward Guidance,Neutral,,neutral,ok,"Policy tone reads neutral. Even with rate held, hawkish tone = bearish; dovish = relief rally.",X
+7. MACRO DATA / POLICY,Trade Balance / CAD,$-30.4 B,,bearish,ok,"Exports $40.4B / Imports $70.8B. Exports: Exports from India rose by a softer 15.5% from the previous year to $40.4 billion in June of 2026. Exports to the US were likely high, as the current trade deal | Imports: Imports to India surged by 31%from the previous year to $70.84 billio",X
+7. MACRO DATA / POLICY,CPI / WPI Inflation,4.38%,prev 3.93%,bearish,ok,"High inflation = fewer rate cuts = bearish. The Indian inflation rate surged to 4.38% in June of 2026 from 3.93% in the earlier month, the highest since December of 2024, and slightly above market expectations of 4.3%. Prices rebounded sharply for transportation (",X
+7. MACRO DATA / POLICY,IIP / Industrial Production,+7.3% YoY,,bullish,ok,"Industrial production in India expanded by 7.3% from the previous year in June of 2026, firmly above market expectations of a 5.7% growth rate to mark the sharpest pace of expansion in nearly two years. The result consolidated the rebound from lower ",X
+7. MACRO DATA / POLICY,Monsoon / El Nino,Neutral,,neutral,manual,Combined impacts of Super El Nino and Indian Ocean Dipole to | India’s severe monsoon season causes more than 100 deaths si,X
+7. MACRO DATA / POLICY,Forex Reserves,$693 B,"+10,520 M",bullish,ok,"Foreign Exchange Reserves in India increased to 692870 USD Million in July 31 from 682350 USD Million in the previous week. Foreign Exchange Reserves in India averaged 319988.70 USD Million from 1998 until 2026, reaching",X
+7. MACRO DATA / POLICY,Scheduled Economic Releases Today,Check headlines,,neutral,warning,"Redefining Growth: India's Revised GDP Estimates and the New | Crude, ceasefire and economic data: What's driving Dalal Str",X
+7. MACRO DATA / POLICY,Central Bank Liquidity / Forex Measures,Check RBI announcements,,neutral,manual,Tighter liquidity = bearish; rupee-support measures = positive,X
+8. EARNINGS / CORPORATE NEWS,Major Results Due Today,8 result(s),,neutral,ok,"Delhivery (Q1 FY26-27), AFFLE 3I (Q1 FY26-27), Anant Raj (Q1 FY26-27), HBL Engineering (Q1 FY26-27), Shaily Engineering Plastics (Q1 FY26-27), Apollo Micro Systems (Q1 FY26-27), Akums Drugs Pharmaceuticals (Q1 FY26-27), Banco Products (India) (Q1 FY26-27) | Beats lift index; misses drag",X
+8. EARNINGS / CORPORATE NEWS,Earnings Beats / Misses,Bullish,,bullish,ok,"BSE Ltd (NSE:BSE) Q3 2026 Earnings Call Highlights: Record R | BSE, other capital market shares rise up to 3% on strong NSE",X
+8. EARNINGS / CORPORATE NEWS,Order Wins / Deals,Neutral,,neutral,ok,Ceigall India shares rise 3% on orders win worth Rs 297 cror | NBCC (India) Wins ₹104.95 Crore Work Orders From SAIL Rourke,X
+8. EARNINGS / CORPORATE NEWS,Government OFS / Divestment,Check news,,neutral,manual,Discounted OFS = supply pressure + liquidity drain = bearish,X
+8. EARNINGS / CORPORATE NEWS,IPO Listings / New Issues,Check news,,neutral,manual,"Big IPO absorbs market liquidity, adds volatility",X
+8. EARNINGS / CORPORATE NEWS,Regulatory / Compliance Orders,Check news,,neutral,manual,SEBI ban / governance risk hits stock + sector contagion,X
+9. SECTOR SIGNALS,Aviation (crude-linked),Bearish,,bearish,ok,"Fuel is biggest cost; low crude = bullish, high = bearish",X
+9. SECTOR SIGNALS,Banks / Financials,Depends on FII flows,,neutral,manual,Gains on inflows; NIMs react to rates. Cross-check FII flows.,X
+9. SECTOR SIGNALS,"IT (global tech, rupee)",Bullish,,bullish,ok,Weak rupee boosts IT earnings; AI headlines drive sentiment,X
+9. SECTOR SIGNALS,US Visa / IT Outsourcing,No restriction news,,neutral,ok,Latest: Silicon Valley can’t import talent like before. So it’s exporting jobs - Rest of World,X
+9. SECTOR SIGNALS,AI Disrupting IT Outsourcing,Disruption headlines,,bearish,warning,Recent: India's outsourcing industry is worth $300bn. Can it survive AI? - BBC | Structural fear hits IT sector sentiment,X
+9. SECTOR SIGNALS,"Auto (GST, oil, demand)",Bearish,,bearish,ok,Low oil + GST cuts = demand boost = bullish,X
+9. SECTOR SIGNALS,OMCs / Paints / Tyres,Bearish,,bearish,ok,Low crude = better margins = bullish,X
+10. SENTIMENT / TECHNICAL,India VIX,12.18,+0.18%,neutral,ok,High VIX (>20) = fear/weakness; low (<12) = complacency,X
+10. SENTIMENT / TECHNICAL,Nifty Support/Resistance,"24,571",-0.27%,neutral,ok,"Prev close: 24,636 | H: 24,630 | L: 24,523 | Breakout above high = buy; breakdown below low = sell",X
+10. SENTIMENT / TECHNICAL,FII/DII F&O Positioning,Provisional data available,,neutral,ok,Heavy FII shorts = squeeze risk; longs = bullish. Cross-check FII net figure in FOREIGN FLOWS section.,X
+10. SENTIMENT / TECHNICAL,PCR / Max Pain,PCR 0.73,,bearish,ok,"PCR: 0.73 | Max Pain: 24,800 | Falling PCR = bearish; heavy call OI = ceiling",X
+10. SENTIMENT / TECHNICAL,SEBI CAS Distortions,CAS rule active,,neutral,manual,Closing Auction Session can cause artificial end-day spikes and next-day unwinding,X
+10. SENTIMENT / TECHNICAL,Expiry Day,27 Aug 2026 (18d),,neutral,ok,"Expiry can cause whipsaw, sharp swings, premium distortion",X
+10. SENTIMENT / TECHNICAL,Block / Bulk Deals,None reported,,neutral,ok,No block deals recorded today,X
+10. SENTIMENT / TECHNICAL,Market Breadth,A:4638 D:4800,,neutral,ok,Advance ratio: 49.1% | Broad positive breadth = strong open,X

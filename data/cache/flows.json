@@ -1,0 +1,76 @@
+{
+  "fii_net": {
+    "label": "FII Net Buy/Sell",
+    "value": "₹-3,810 Cr",
+    "change": "",
+    "direction": "bearish",
+    "status": "ok",
+    "details": "Net selling = bearish pressure (NSE provisional, 22-Sep-2026)",
+    "source": "nse",
+    "last_updated": "2026-09-23 14:35 IST",
+    "manual": false,
+    "stale": false
+  },
+  "dii_net": {
+    "label": "DII Net Buy/Sell",
+    "value": "₹4,120 Cr",
+    "change": "",
+    "direction": "bullish",
+    "status": "ok",
+    "details": "DII buying cushions FII selling (NSE provisional, 22-Sep-2026)",
+    "source": "nse",
+    "last_updated": "2026-09-23 14:35 IST",
+    "manual": false,
+    "stale": false
+  },
+  "dii_ofs": {
+    "label": "DII Selling for OFS",
+    "value": "OFS news present",
+    "change": "",
+    "direction": "neutral",
+    "status": "warning",
+    "details": "OFS/divestment news: LIC OFS Launches To Sell Up To 6.5% Stake At ₹382 Floor Pric | India’s LIC stake sale begins: Centre offers 6.5% stake at R. Primary mkt absorbs cash = secondary liquidity drain = bearish.",
+    "source": "news",
+    "last_updated": "2026-09-23 14:35 IST",
+    "manual": true,
+    "stale": false
+  },
+  "fii_selloff": {
+    "label": "FII Buying During Selloff",
+    "value": "FII not net buying (-3,810 Cr)",
+    "change": "",
+    "direction": "neutral",
+    "status": "warning",
+    "details": "Accumulation signal only when FII buy >500 Cr while Nifty falls >0.5%",
+    "source": "nse",
+    "last_updated": "2026-09-23 14:35 IST",
+    "manual": true,
+    "stale": false
+  },
+  "fii_trend": {
+    "label": "FII Consecutive Days Trend",
+    "value": "Selling × 3 days",
+    "change": "",
+    "direction": "bearish",
+    "status": "ok",
+    "details": "Last 25 trading days. Sustained trend > single-day noise.",
+    "source": "nse+cache",
+    "last_updated": "2026-09-23 14:35 IST",
+    "manual": false,
+    "stale": false
+  },
+  "flows_manual": {
+    "label": "FII/DII Data Interpretation",
+    "value": "Needs cross-checking",
+    "change": "",
+    "direction": "neutral",
+    "status": "manual",
+    "details": "Net numbers alone can be misleading — check bulk/block deal breakdowns",
+    "source": "manual",
+    "last_updated": "2026-09-23 14:35 IST",
+    "manual": true,
+    "stale": false
+  },
+  "_timestamp": 1790154354.3917708,
+  "_cache_ttl_hours": 1
+}

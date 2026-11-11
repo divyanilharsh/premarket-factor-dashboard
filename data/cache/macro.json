@@ -1,0 +1,112 @@
+{
+  "rbi_repo": {
+    "label": "RBI Policy / Repo Rate",
+    "value": "5.25%",
+    "change": "",
+    "direction": "neutral",
+    "status": "ok",
+    "details": "Stance: neutral. The Reserve Bank of India (RBI) left its key repo rate unchanged at 5.25% for the fourth consecutive meeting in August and maintained a neutral stance amid a weakening rupee. The decision was in line with expectations, a",
+    "source": "tradingeconomics",
+    "last_updated": "2026-09-23 15:25 IST",
+    "manual": false,
+    "stale": false
+  },
+  "rbi_guidance": {
+    "label": "RBI Forward Guidance",
+    "value": "Neutral",
+    "change": "",
+    "direction": "neutral",
+    "status": "ok",
+    "details": "Policy tone reads neutral. Even with rate held, hawkish tone = bearish; dovish = relief rally.",
+    "source": "tradingeconomics",
+    "last_updated": "2026-09-23 15:25 IST",
+    "manual": false,
+    "stale": false
+  },
+  "trade_balance": {
+    "label": "Trade Balance / CAD",
+    "value": "$-26.9 B",
+    "change": "",
+    "direction": "bearish",
+    "status": "ok",
+    "details": "Exports $43.8B / Imports $70.7B. Prev month: exports $44.2B, imports $76.2B. Deficit narrowing. Exports: Exports in India decreased to 43.81 USD Billion in August from 44.24 USD Billion in July of 2026. Exports in India averaged 8.54 USD Billion from 1957 until 202 | Imports: Imports in India decreased to 70.67 USD Billion in August from 76.22 ",
+    "source": "tradingeconomics",
+    "last_updated": "2026-09-23 15:25 IST",
+    "manual": false,
+    "stale": false
+  },
+  "cpi_wpi": {
+    "label": "CPI / WPI Inflation",
+    "value": "4.82%",
+    "change": "prev 4.45%",
+    "direction": "bearish",
+    "status": "ok",
+    "details": "High inflation = fewer rate cuts = bearish. The headline inflation rate in India rose to 4.82% in August of 2026, the highest since December of 2024, from 4.45% in the previous month and aligned with market expectations of 4.8%. The increase reflected fresh inflat",
+    "source": "tradingeconomics",
+    "last_updated": "2026-09-23 15:25 IST",
+    "manual": false,
+    "stale": false
+  },
+  "iip_gst": {
+    "label": "IIP / Industrial Production",
+    "value": "+6.7% YoY",
+    "change": "",
+    "direction": "bullish",
+    "status": "ok",
+    "details": "Industrial production in India expanded by 6.7% from the previous year in July of 2026, slowing from the upwardly revised, over two-year high of 8.8% in June, but ahead of market expectations of 6%. The result remained above averages from the previou",
+    "source": "tradingeconomics",
+    "last_updated": "2026-09-23 15:25 IST",
+    "manual": false,
+    "stale": false
+  },
+  "monsoon": {
+    "label": "Monsoon / El Nino",
+    "value": "Bearish",
+    "change": "",
+    "direction": "bearish",
+    "status": "manual",
+    "details": "A strong ‘El Nino’ and northeast monsoon: What lies ahead fo | India’s monsoon deficit widens to 15%, strengthening El Nino",
+    "source": "google_news_rss",
+    "last_updated": "2026-09-23 15:25 IST",
+    "manual": true,
+    "stale": false
+  },
+  "forex_reserves": {
+    "label": "Forex Reserves",
+    "value": "$781 B",
+    "change": "-4,930 M",
+    "direction": "bearish",
+    "status": "ok",
+    "details": "Foreign Exchange Reserves in India decreased to 780780 USD Million in September 11 from 785710 USD Million in the previous week. Foreign Exchange Reserves in India averaged 321731.22 USD Million from 1998 until 2026, rea",
+    "source": "tradingeconomics",
+    "last_updated": "2026-09-23 15:25 IST",
+    "manual": false,
+    "stale": false
+  },
+  "economic_calendar": {
+    "label": "Scheduled Economic Releases Today",
+    "value": "Check headlines",
+    "change": "",
+    "direction": "neutral",
+    "status": "warning",
+    "details": "Global Markets React to Recent Economic Data Releases - Indi | India reports Q1 FY27 GDP data today: From oil shock to weak",
+    "source": "google_news_rss",
+    "last_updated": "2026-09-23 15:25 IST",
+    "manual": true,
+    "stale": false
+  },
+  "liquidity": {
+    "label": "Central Bank Liquidity / Forex Measures",
+    "value": "Check RBI announcements",
+    "change": "",
+    "direction": "neutral",
+    "status": "manual",
+    "details": "Tighter liquidity = bearish; rupee-support measures = positive",
+    "source": "manual",
+    "last_updated": "2026-09-23 15:25 IST",
+    "manual": true,
+    "stale": false
+  },
+  "_timestamp": 1790157351.806669,
+  "_cache_ttl_hours": 3
+}

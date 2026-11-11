@@ -1,0 +1,64 @@
+{
+  "oil_tensions": {
+    "label": "Middle East / Oil Region Tensions",
+    "value": "Bullish (2h ago)",
+    "change": "",
+    "direction": "bullish",
+    "status": "ok",
+    "details": "Newest: 2h ago | Oil prices fall as US-Iran diplomacy, Saudi flows ease  [2h ago, Anadolu Ajansı] | Oil Prices Rise Again as Middle East Conflict Tightens  [2h ago, news.brgbuildingso]",
+    "source": "google_news_rss",
+    "last_updated": "2026-09-23 15:15 IST",
+    "manual": true,
+    "stale": false
+  },
+  "trade_war": {
+    "label": "Trade War / Tariffs",
+    "value": "Bearish (57m ago)",
+    "change": "",
+    "direction": "bearish",
+    "status": "ok",
+    "details": "Newest: 57m ago | Trump-Xi trade talks: What’s at stake on tariffs, AI an [2h ago, firstpost.com] | Here’s What’s Happening to the Billions of Dollars of U [57m ago, Bloomberg]",
+    "source": "google_news_rss",
+    "last_updated": "2026-09-23 15:15 IST",
+    "manual": true,
+    "stale": false
+  },
+  "sanctions": {
+    "label": "Sanctions / Military Action",
+    "value": "Bearish (6h ago)",
+    "change": "",
+    "direction": "bearish",
+    "status": "ok",
+    "details": "Newest: 6h ago | UK Prime Minister vows not to ‘stand by’ as Palestinian [7h ago, Al Jazeera] | Zelensky Warns Of Impending Massive Russian Attack On U [10h ago, Sahi]",
+    "source": "google_news_rss",
+    "last_updated": "2026-09-23 15:15 IST",
+    "manual": true,
+    "stale": false
+  },
+  "us_india_tariff": {
+    "label": "US-India Tariff / Trade Action",
+    "value": "Bearish (2h ago)",
+    "change": "",
+    "direction": "bearish",
+    "status": "ok",
+    "details": "Newest: 2h ago | India-U.S. trade deal unlikely until competitor countri [16h ago, The Hindu] | India, Canada & Mexico's $8 trillion trade math looks f [2h ago, The Economic Times]",
+    "source": "google_news_rss",
+    "last_updated": "2026-09-23 15:15 IST",
+    "manual": true,
+    "stale": false
+  },
+  "peace_talks": {
+    "label": "Peace-Talk Status (Ukraine/Russia)",
+    "value": "Bullish (6h ago)",
+    "change": "",
+    "direction": "bullish",
+    "status": "ok",
+    "details": "Newest: 6h ago | Zelenskyy tells Trump: Xi Jinping \"has influence on Put [8h ago, Українська правда] | In meeting with Trump, Zelenskyy calls for Ukraine-Russ [6h ago, firstpost.com]",
+    "source": "google_news_rss",
+    "last_updated": "2026-09-23 15:15 IST",
+    "manual": true,
+    "stale": false
+  },
+  "_timestamp": 1790156749.2120264,
+  "_cache_ttl_hours": 0.17
+}

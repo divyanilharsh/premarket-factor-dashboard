@@ -1,0 +1,88 @@
+{
+  "aviation": {
+    "label": "Aviation (crude-linked)",
+    "value": "Bearish",
+    "change": "",
+    "direction": "bearish",
+    "status": "ok",
+    "details": "Fuel is biggest cost; high crude = bearish",
+    "source": "derived",
+    "last_updated": "2026-09-23 15:25 IST",
+    "manual": false,
+    "stale": false
+  },
+  "banks": {
+    "label": "Banks / Financials",
+    "value": "Depends on FII flows",
+    "change": "",
+    "direction": "neutral",
+    "status": "manual",
+    "details": "Gains on inflows; NIMs react to rates. Cross-check FII flows.",
+    "source": "derived",
+    "last_updated": "2026-09-23 15:25 IST",
+    "manual": true,
+    "stale": false
+  },
+  "it": {
+    "label": "IT (global tech, rupee)",
+    "value": "Bearish",
+    "change": "",
+    "direction": "bearish",
+    "status": "ok",
+    "details": "Weak rupee (USD/INR up) boosts IT earnings; Nasdaq direction sets global tech tone. Signals: rupee flat, Nasdaq bearish",
+    "source": "derived",
+    "last_updated": "2026-09-23 15:25 IST",
+    "manual": false,
+    "stale": false
+  },
+  "us_visa": {
+    "label": "US Visa / IT Outsourcing",
+    "value": "Restrictions flagged",
+    "change": "",
+    "direction": "bearish",
+    "status": "ok",
+    "details": "Recent: Trump extends H-1B visa restrictions, including $100,000 payment requirement, for another year - tim | Restrictions hurt Indian IT = sector drag",
+    "source": "google_news_rss",
+    "last_updated": "2026-09-23 15:25 IST",
+    "manual": false,
+    "stale": false
+  },
+  "ai_disruption": {
+    "label": "AI Disrupting IT Outsourcing",
+    "value": "No disruption headlines",
+    "change": "",
+    "direction": "neutral",
+    "status": "ok",
+    "details": "Latest: India's outsourcing industry holds ground as AI reshapes jobs, says ING - Business Standard",
+    "source": "google_news_rss",
+    "last_updated": "2026-09-23 15:25 IST",
+    "manual": false,
+    "stale": false
+  },
+  "auto": {
+    "label": "Auto (GST, oil, demand)",
+    "value": "Bearish",
+    "change": "",
+    "direction": "bearish",
+    "status": "ok",
+    "details": "High oil = higher fuel prices, demand hit = bearish",
+    "source": "derived",
+    "last_updated": "2026-09-23 15:25 IST",
+    "manual": false,
+    "stale": false
+  },
+  "omcs": {
+    "label": "OMCs / Paints / Tyres",
+    "value": "Bearish",
+    "change": "",
+    "direction": "bearish",
+    "status": "ok",
+    "details": "High crude = margin compression = bearish",
+    "source": "derived",
+    "last_updated": "2026-09-23 15:25 IST",
+    "manual": false,
+    "stale": false
+  },
+  "_timestamp": 1790157353.5059547,
+  "_cache_ttl_hours": 1
+}
