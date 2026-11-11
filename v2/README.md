@@ -99,6 +99,33 @@ python export_market_csv.py --out D:\temp\market_data.csv
 The exporter opens SQLite in read-only/query-only mode. If the previous CSV is
 open in Excel, close it and run again so it can be replaced.
 
+## Training data CSV
+
+Build a supervised training file from the database:
+
+```bat
+python export_training_csv.py
+```
+
+Output:
+
+```text
+data\exports\training_data.csv
+```
+
+Each row is one valid hourly pair:
+
+- **Inputs**: every factor's `delta` at the base mark, plus V2's four momentum
+  inputs.
+- **Target**: `target_next_pct` = next mark's NIFTY return in percent.
+- Overnight/long-gap pairs are skipped, matching the V2 learner.
+- `factor_count` tells how many factor deltas were available at that mark.
+- The previous training CSV is replaced.
+
+Double-click `Export Training Data CSV.bat` for the same result. The script
+prints how many valid pairs exist and how many more are needed before the V2
+neural net can train.
+
 ## Self-test
 
 ```bat
