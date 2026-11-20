@@ -1,0 +1,173 @@
+{
+ "version": 1,
+ "kind": "decision_tree",
+ "label": "next_hour_nifty_pct",
+ "classes": [
+  "VN",
+  "N",
+  "NE",
+  "P",
+  "VP"
+ ],
+ "class_names": {
+  "VN": "very negative",
+  "N": "negative",
+  "NE": "neutral",
+  "P": "positive",
+  "VP": "very positive"
+ },
+ "cuts": {
+  "vn_max": -0.15952049090748444,
+  "n_max": -0.014226857118180345,
+  "ne_max": 0.06377554956384697,
+  "p_max": 0.2339466731928274
+ },
+ "features": [
+  "f:1. CRUDE OIL::brent",
+  "f:1. CRUDE OIL::wti",
+  "f:10. SENTIMENT / TECHNICAL::expiry",
+  "f:10. SENTIMENT / TECHNICAL::market_breadth",
+  "f:10. SENTIMENT / TECHNICAL::nifty_levels",
+  "f:10. SENTIMENT / TECHNICAL::pcr",
+  "f:10. SENTIMENT / TECHNICAL::vix",
+  "f:11. OPTION CHAIN - NIFTY::atm_pcr",
+  "f:11. OPTION CHAIN - NIFTY::bias",
+  "f:11. OPTION CHAIN - NIFTY::chng_oi",
+  "f:11. OPTION CHAIN - NIFTY::highest_call",
+  "f:11. OPTION CHAIN - NIFTY::highest_put",
+  "f:11. OPTION CHAIN - NIFTY::iv",
+  "f:11. OPTION CHAIN - NIFTY::oi",
+  "f:11. OPTION CHAIN - NIFTY::pcr",
+  "f:2. CURRENCY::usd_inr",
+  "f:3. FOREIGN FLOWS::dii_net",
+  "f:3. FOREIGN FLOWS::fii_net",
+  "f:3. FOREIGN FLOWS::fii_selloff",
+  "f:3. FOREIGN FLOWS::fii_trend",
+  "f:4. GLOBAL MARKETS::asia_indices",
+  "f:4. GLOBAL MARKETS::sgx_nifty",
+  "f:4. GLOBAL MARKETS::us_indices",
+  "f:5. US BOND YIELDS / DOLLAR::dxy",
+  "f:5. US BOND YIELDS / DOLLAR::tnx",
+  "f:6. GEOPOLITICS::oil_tensions",
+  "f:6. GEOPOLITICS::peace_talks",
+  "f:6. GEOPOLITICS::sanctions",
+  "f:6. GEOPOLITICS::trade_war",
+  "f:6. GEOPOLITICS::us_india_tariff",
+  "f:7. MACRO DATA / POLICY::cpi_wpi",
+  "f:7. MACRO DATA / POLICY::forex_reserves",
+  "f:7. MACRO DATA / POLICY::iip_gst",
+  "f:7. MACRO DATA / POLICY::trade_balance",
+  "f:8. EARNINGS / CORPORATE NEWS::major_results",
+  "momentum_1",
+  "momentum_2",
+  "momentum_3",
+  "momentum_day",
+  "nifty_day_pct",
+  "hour_ist",
+  "factor_count",
+  "breadth"
+ ],
+ "tree": {
+  "f": "f:10. SENTIMENT / TECHNICAL::market_breadth",
+  "t": -88.5,
+  "m": 1,
+  "l": {
+   "p": [
+    0.3962,
+    0.0,
+    0.283,
+    0.2642,
+    0.0566
+   ],
+   "n": 17
+  },
+  "r": {
+   "p": [
+    0.0,
+    0.4038,
+    0.1154,
+    0.1346,
+    0.3462
+   ],
+   "n": 16
+  }
+ },
+ "status": "learning",
+ "n_pairs": 33,
+ "min_pairs": 120,
+ "trained_at": "2026-11-20 16:57:01",
+ "trained_ts": 1795174021.04452,
+ "db": "data/v3/market.db",
+ "max_gap_hours": 2.5,
+ "hyper": {
+  "max_depth": 4,
+  "min_samples_leaf": 15,
+  "class_weight": "balanced",
+  "random_state": 42
+ },
+ "metrics": {},
+ "in_sample": {
+  "n": 33,
+  "macro_f1": 0.2263,
+  "balanced_accuracy": 0.4,
+  "per_class_recall": {
+   "VN": 1.0,
+   "N": 1.0,
+   "NE": 0.0,
+   "P": 0.0,
+   "VP": 0.0
+  },
+  "confusion": [
+   [
+    7,
+    0,
+    0,
+    0,
+    0
+   ],
+   [
+    0,
+    6,
+    0,
+    0,
+    0
+   ],
+   [
+    5,
+    2,
+    0,
+    0,
+    0
+   ],
+   [
+    5,
+    1,
+    0,
+    0,
+    0
+   ],
+   [
+    1,
+    6,
+    0,
+    0,
+    0
+   ]
+  ],
+  "predicted_distribution": {
+   "VN": 18,
+   "N": 15,
+   "NE": 0,
+   "P": 0,
+   "VP": 0
+  },
+  "optimistic": true,
+  "note": "in-sample; not a performance estimate"
+ },
+ "notes": [
+  "Labels are quantile bands of the next hourly NIFTY % return.",
+  "Features come from the base mark only; no future data.",
+  "Scores are expanding-window walk-forward with a 1-mark embargo.",
+  "Below min_pairs the tree is still exported but status is learning."
+ ]
+}
