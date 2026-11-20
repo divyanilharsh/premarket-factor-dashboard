@@ -53,17 +53,23 @@ health() {
 
 # ---- stop ----------------------------------------------------------------
 if [ "$STOP" -eq 1 ]; then
+  PID=""
   if [ -f "$PID_FILE" ]; then
     PID="$(cat "$PID_FILE" 2>/dev/null || true)"
-    if [ -n "${PID:-}" ] && kill -0 "$PID" 2>/dev/null; then
+  fi
+  if [ -z "${PID:-}" ]; then
+    PID="$(lsof -nP -iTCP:"$PORT" -sTCP:LISTEN -t 2>/dev/null | head -1)"
+  fi
+  if [ -n "${PID:-}" ] && kill -0 "$PID" 2>/dev/null; then
+    if ps -p "$PID" -o command= 2>/dev/null | grep -q "market_pulse_v2.py"; then
       kill "$PID" && echo "Stopped V2 (pid $PID)."
     else
-      echo "No running V2 process for pid ${PID:-?}."
+      echo "pid $PID is not V2 (stale pid file), not killing it."
     fi
-    rm -f "$PID_FILE"
   else
-    echo "No pid file at $PID_FILE."
+    echo "V2 is not running on port $PORT."
   fi
+  rm -f "$PID_FILE"
   exit 0
 fi
 

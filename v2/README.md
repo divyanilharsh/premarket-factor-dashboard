@@ -53,20 +53,30 @@ The V1 dashboard can keep running on 8080 at the same time.
 
 ### Optional auto-start
 
-Windows: double-click `v2\Install V2 AutoStart.bat`.  This creates a separate
-Startup shortcut named `Pre-Market Pulse V2.lnk`.  The existing V1 Startup
-shortcut and `Pre-Market Pulse AutoStart` task are not modified.
+Windows: double-click `v2\Install V2 AutoStart.bat` (V2) or use
+`Start Market Pulse.bat` for V1.
 
-macOS: install a separate LaunchAgent that starts only V2 at login:
+macOS: install login agents for both dashboards (each is a separate
+LaunchAgent, so stopping one never touches the other):
 
 ```bash
-./v2/install_autostart_macos.sh          # default port 8081
-./v2/install_autostart_macos.sh --port 8081
-./v2/uninstall_autostart_macos.sh        # remove it again
+./install_autostart_macos.sh              # V1 :8080 + V2 :8081
+./install_autostart_macos.sh --only v2    # V2 only
+./install_autostart_macos.sh --only v1    # V1 only
+./uninstall_autostart_macos.sh            # remove both
 ```
 
-The agent is `com.premarketpulse.v2` in `~/Library/LaunchAgents/` and logs to
-`data/v2/logs/v2.launchd.log`.  V1 is not touched on either platform.
+Agents are `com.premarketpulse.v1` and `com.premarketpulse.v2` in
+`~/Library/LaunchAgents/`.  Logs:
+
+```text
+data/logs/v1.launchd.log
+data/v2/logs/v2.launchd.log
+```
+
+They start when you log in (LaunchAgents are per-user, so they do not run at
+the login screen).  `v2/install_autostart_macos.sh` is kept as a V2-only
+wrapper around the shared installer.
 
 ## Data sharing
 

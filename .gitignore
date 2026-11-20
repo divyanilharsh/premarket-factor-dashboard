@@ -11,3 +11,5 @@ data/exports/*.tmp
 venv/
 data/v2/logs/
 data/v2/v2.pid
+data/logs/
+data/v1.pid
