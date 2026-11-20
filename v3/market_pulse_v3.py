@@ -1163,7 +1163,7 @@ class V2Tracker:
             details=("Ticked factors only. Weight = power x confidence; "
                      "missing/zero delta counts as neutral 50. "
                      "This is the long-term view, not the old V1 P/E bar."),
-            source="V2 learner")
+            source="V3 learner")
         if pred:
             pred_pct = float(pred.get("pct") or 0)
             pred_dir = ("bullish" if pred_pct > 0.02 else
@@ -1218,7 +1218,7 @@ class V2Tracker:
                      "coverage %.1f%% | %s" %
                      (self.pairs, coverage,
                       ("span " + span) if span else "waiting for first mark")),
-            source="V2 SQLite")
+            source="V3 SQLite")
         model_value = ("ready" if pred else "learning")
         model_details = ("%d selected factor inputs + 4 momentum inputs. "
                          "%d hidden units. %d stored marks, %d pairs." %
@@ -1231,11 +1231,11 @@ class V2Tracker:
             model_details += " | live direction %.0f%% (%d scored)" % (
                 live["hit_rate"], live.get("scored") or 0)
         rows["model_status"] = factor(
-            label="V2 model status",
+            label="V3 model status",
             value=model_value,
             change="%d pairs" % samples,
             direction="neutral", status="ok",
-            details=model_details, source="V2 learner")
+            details=model_details, source="V3 learner")
 
         tree_state = {}
         try:
@@ -1288,7 +1288,7 @@ class V2Tracker:
             direction=tree_dir,
             status="ok" if tree_ready else "manual",
             details=tree_details,
-            source="V2 decision tree")
+            source="V3 decision tree")
         for row in rows.values():
             row["power"] = 0.0
             row["effect"] = 50.0
@@ -1617,7 +1617,7 @@ def build_snapshot():
                 categories.insert(0, track["category"])
             chips = (track.get("chips") or []) + chips
     except Exception as exc:
-        errors.append("V2 tracker: %s" % exc)
+        errors.append("V3 tracker: %s" % exc)
         if mm.VERBOSE:
             traceback.print_exc()
 
@@ -1749,7 +1749,7 @@ class Store:
                 self.snapshot = snap
                 self.last_error = ""
             save_disk_snapshot(snap)
-            print("[%s] V2 refreshed in %.1fs (%d factors, %d errors)"
+            print("[%s] V3 refreshed in %.1fs (%d factors, %d errors)"
                   % (stamp(), snap.get("duration", 0),
                      sum(len(c["factors"]) for c in snap["categories"]),
                      len(snap.get("errors") or [])))
@@ -2582,7 +2582,7 @@ def backup_database(store, keep=30):
                 os.remove(old)
             except OSError:
                 pass
-        print("[%s] V2 backup written: %s" % (stamp(), path))
+        print("[%s] V3 backup written: %s" % (stamp(), path))
     except Exception as exc:
         print("[%s] V2 backup skipped: %s" % (stamp(), exc))
 
@@ -2607,7 +2607,7 @@ def maybe_retrain_tree(mark_store):
         pass
     TREE_RETRAIN["count"] = count
     TREE_RETRAIN["ts"] = now
-    print("[%s] V2 tree retrained on %d marks" % (stamp(), count), flush=True)
+    print("[%s] V3 tree retrained on %d marks" % (stamp(), count), flush=True)
 
 
 def scheduler(api_store, mark_store, market_minutes, off_minutes):
