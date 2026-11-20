@@ -48,7 +48,7 @@ Rule weights live in `v3/tech/golden_gate.py` (`COMPRESSION_PCT`,
 | Timeframes | Source | Why |
 |---|---|---|
 | 1d, 1wk, 1mo | NSE daily index archive (`ind_close_all_DDMMYYYY.csv`) | reliable, includes volume, no rate-limit war |
-| 1m, 5m, 1h | Yahoo chart API | the only free intraday source, rate limited |
+| 1m, 5m, 1h | Yahoo chart API, then NSE live session | Yahoo is rate limited; NSE's current-session chart is the fallback, and 5m/1h resample from 1m |
 
 NSE daily files are cached one row per day in
 `data/v3/candles/nse_daily.json`; weekly/monthly are resampled from them, so a

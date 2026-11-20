@@ -252,6 +252,43 @@ def _backfill_1m():
     return collected, (errors[-1] if errors else "")
 
 
+def _resample(bars, tf):
+    step = {"5m": 300, "1h": 3600}.get(tf)
+    if not step or not bars:
+        return []
+    groups = {}
+    for bar in bars:
+        groups.setdefault(int(bar["t"]) // step * step, []).append(bar)
+    out = []
+    for key in sorted(groups):
+        chunk = groups[key]
+        out.append({"t": key, "o": chunk[0]["o"],
+                    "h": max(b["h"] for b in chunk),
+                    "l": min(b["l"] for b in chunk),
+                    "c": chunk[-1]["c"],
+                    "v": sum(float(b.get("v") or 0) for b in chunk)})
+    return out
+
+
+def _intraday_fallback(tf, cached):
+    """NSE live session for 1m; 5m/1h resampled from 1m when Yahoo refuses."""
+    try:
+        from tech import nse_intraday
+    except Exception:
+        return []
+    base = []
+    if tf == "1m":
+        base = nse_intraday.fetch_1m()
+        if not base and cached:
+            base = cached.get("bars") or []
+        return base
+    source = _read_cache("1m")
+    base = (source or {}).get("bars") or []
+    if not base:
+        base = nse_intraday.fetch_1m()
+    return _resample(base, tf) if base else []
+
+
 def get_series(tf, allow_fetch=True, force=False):
     """Return {'bars', 'stale', 'fetched_ts', 'error'} for one timeframe."""
     if tf not in TF_SPEC:
@@ -313,6 +350,14 @@ def get_series(tf, allow_fetch=True, force=False):
                    "interval": spec["yahoo"], "error": ""}
         _write_cache(tf, payload)
         return {"bars": bars, "stale": False, "fetched_ts": now, "error": ""}
+
+    if not bars and tf in ("1m", "5m", "1h"):
+        alt = _intraday_fallback(tf, cached)
+        if alt:
+            _write_cache(tf, {"fetched_ts": now, "bars": alt,
+                              "interval": "nse" if tf == "1m" else "resampled",
+                              "error": ""})
+            return {"bars": alt, "stale": False, "fetched_ts": now, "error": ""}
 
     if cached:
         return {"bars": cached["bars"], "stale": True,
