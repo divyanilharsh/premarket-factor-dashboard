@@ -95,8 +95,8 @@
  "status": "learning",
  "n_pairs": 33,
  "min_pairs": 120,
- "trained_at": "2026-11-20 16:57:01",
- "trained_ts": 1795174021.04452,
+ "trained_at": "2026-11-20 17:16:55",
+ "trained_ts": 1795175215.186336,
  "db": "data/v3/market.db",
  "max_gap_hours": 2.5,
  "hyper": {

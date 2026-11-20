@@ -60,6 +60,7 @@ BACKFILL_ORDER = ("1d", "1wk", "1mo", "1h", "5m", "1m")
 
 COOLDOWN_UNTIL = [0.0]
 WARM = [False]
+FAILED_UNTIL = {}
 
 _lock = threading.RLock()
 _last_request = [0.0]
@@ -241,12 +242,19 @@ def get_series(tf, allow_fetch=True, force=False):
     """Return {'bars', 'stale', 'fetched_ts', 'error'} for one timeframe."""
     if tf not in TF_SPEC:
         raise KeyError("unknown timeframe %r" % tf)
+    nse_fallback = None
     if tf in ("1d", "1wk", "1mo"):
         try:
             from tech import nse_archive
             nse = nse_archive.get_series(tf, allow_fetch=allow_fetch)
-            if len(nse.get("bars") or []) >= 20:
+            count = len(nse.get("bars") or [])
+            # Monthly needs 200+ bars for EMA200; NSE's archive stops in 2015,
+            # so try Yahoo for the longer monthly series and fall back to NSE.
+            need = 200 if tf == "1mo" else 20
+            if count >= need:
                 return nse
+            if count:
+                nse_fallback = nse
         except Exception:
             pass
     spec = TF_SPEC[tf]
@@ -257,10 +265,19 @@ def get_series(tf, allow_fetch=True, force=False):
     if cached and fresh and not force:
         return {"bars": cached["bars"], "stale": False,
                 "fetched_ts": cached.get("fetched_ts"), "error": ""}
+    if FAILED_UNTIL.get(tf, 0) > now and not force:
+        if cached:
+            return {"bars": cached["bars"], "stale": True,
+                    "fetched_ts": cached.get("fetched_ts"),
+                    "error": "retry later (recent failure)"}
+        if nse_fallback:
+            return nse_fallback
     if not allow_fetch:
         if cached:
             return {"bars": cached["bars"], "stale": True,
                     "fetched_ts": cached.get("fetched_ts"), "error": "fetch disabled"}
+        if nse_fallback:
+            return nse_fallback
         return {"bars": [], "stale": True, "fetched_ts": None,
                 "error": "no cache"}
     if not warm_session():
@@ -268,6 +285,8 @@ def get_series(tf, allow_fetch=True, force=False):
             return {"bars": cached["bars"], "stale": True,
                     "fetched_ts": cached.get("fetched_ts"),
                     "error": "throttled; serving cache"}
+        if nse_fallback:
+            return nse_fallback
         return {"bars": [], "stale": True, "fetched_ts": None,
                 "error": "throttled; no cache yet"}
 
@@ -287,6 +306,9 @@ def get_series(tf, allow_fetch=True, force=False):
     if cached:
         return {"bars": cached["bars"], "stale": True,
                 "fetched_ts": cached.get("fetched_ts"), "error": error}
+    FAILED_UNTIL[tf] = time.time() + 1800
+    if nse_fallback:
+        return nse_fallback
     return {"bars": [], "stale": True, "fetched_ts": None, "error": error}
 
 

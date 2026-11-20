@@ -24,5 +24,18 @@
   },
   "macro_f1": null,
   "balanced_accuracy": null
+ },
+ {
+  "trained_at": "2026-11-20 17:16:55",
+  "status": "learning",
+  "n_pairs": 33,
+  "cuts": {
+   "vn_max": -0.15952049090748444,
+   "n_max": -0.014226857118180345,
+   "ne_max": 0.06377554956384697,
+   "p_max": 0.2339466731928274
+  },
+  "macro_f1": null,
+  "balanced_accuracy": null
  }
 ]
