@@ -22,31 +22,51 @@ This is a separate dashboard. It does **not** modify `market_mobile.py`, its
 
 ## Run
 
+Windows:
+
 ```bat
 python v2\market_pulse_v2.py --port 8081
 ```
 
-or double-click:
+or double-click `Start Market Pulse V2.bat`.
 
-```text
-Start Market Pulse V2.bat
+macOS / Linux:
+
+```bash
+python3 v2/market_pulse_v2.py --port 8081
 ```
+
+or use the launcher (double-click it in Finder, or run it from Terminal):
+
+```bash
+./v2/start_v2.command               # background + opens the browser
+./v2/start_v2.command --no-open     # background, no browser
+./v2/start_v2.command --foreground  # run in this terminal
+./v2/start_v2.command --port 8082   # different port
+./v2/start_v2.command --stop        # stop the background server
+```
+
+The launcher logs to `data/v2/logs/v2.log` and stores its pid in
+`data/v2/v2.pid`.
 
 The V1 dashboard can keep running on 8080 at the same time.
 
 ### Optional auto-start
 
-To start V2 at logon as well (without changing the existing V1 auto-start),
-double-click:
+Windows: double-click `v2\Install V2 AutoStart.bat`.  This creates a separate
+Startup shortcut named `Pre-Market Pulse V2.lnk`.  The existing V1 Startup
+shortcut and `Pre-Market Pulse AutoStart` task are not modified.
 
-```text
-v2\Install V2 AutoStart.bat
+macOS: install a separate LaunchAgent that starts only V2 at login:
+
+```bash
+./v2/install_autostart_macos.sh          # default port 8081
+./v2/install_autostart_macos.sh --port 8081
+./v2/uninstall_autostart_macos.sh        # remove it again
 ```
 
-This creates a separate Startup shortcut named
-`Pre-Market Pulse V2.lnk`.  The existing V1 Startup shortcut and
-`Pre-Market Pulse AutoStart` task are not modified.  The shortcut was already
-created during this rollout.
+The agent is `com.premarketpulse.v2` in `~/Library/LaunchAgents/` and logs to
+`data/v2/logs/v2.launchd.log`.  V1 is not touched on either platform.
 
 ## Data sharing
 

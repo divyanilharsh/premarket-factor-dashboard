@@ -18,7 +18,9 @@ V2 model
 * GUI    = distinct bars for LONG-TERM P/E and NN V2, plus a data-progress bar
 
 Run:
-    python v2\\market_pulse_v2.py --port 8081
+    python v2/market_pulse_v2.py --port 8081        # macOS / Linux
+    python v2\\market_pulse_v2.py --port 8081       # Windows
+    ./v2/start_v2.command                          # macOS launcher
 
 The V1 dashboard is untouched; this process only reads V1 hourly marks once
 to seed a new V2 database (the V1 file is never modified).
@@ -2442,7 +2444,7 @@ def main(argv=None):
         server = QuietServer((host, args.port), Handler)
     except OSError as exc:
         sys.stderr.write("\nCould not start V2 on %s:%s - %s\n"
-                         "Try another port: python v2\\market_pulse_v2.py --port 8082\n"
+                         "Try another port: python v2/market_pulse_v2.py --port 8082\n"
                          % (host, args.port, exc))
         raise SystemExit(1)
 

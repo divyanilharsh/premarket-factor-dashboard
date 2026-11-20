@@ -3,7 +3,8 @@
 
 Run from the project root:
 
-    python v2\\selftest.py
+    python v2/selftest.py        # macOS / Linux
+    python v2\\selftest.py       # Windows
 
 It uses only temporary files and never touches the live V1 or V2 stores.
 """

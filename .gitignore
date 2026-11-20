@@ -9,3 +9,5 @@ data/v2/market.db-shm
 data/exports/*.tmp
 .venv/
 venv/
+data/v2/logs/
+data/v2/v2.pid
