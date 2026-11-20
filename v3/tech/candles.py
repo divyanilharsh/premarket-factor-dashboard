@@ -31,16 +31,16 @@ USER_AGENT = (
 )
 
 # One request every MIN_GAP_SECONDS keeps V1/V2's own Yahoo budget intact.
-MIN_GAP_SECONDS = 8.0
-MAX_ATTEMPTS = 3
-RETRY_SLEEPS = (10, 25, 40)
+MIN_GAP_SECONDS = 6.0
+MAX_ATTEMPTS = 2
+RETRY_SLEEPS = (10, 20)
 
 IST = timezone(timedelta(hours=5, minutes=30))
 
 # timeframe -> yahoo interval, backfill spec, cache ttl
 TF_SPEC = {
-    "1m":  {"yahoo": "1m",  "range": None,    "backfill_days": 28,
-            "chunk_days": 7,  "ttl": 120,   "warmup": 1000},
+    "1m":  {"yahoo": "1m",  "range": "5d",    "backfill_days": 28,
+            "chunk_days": 7,  "ttl": 300,   "warmup": 500},
     "5m":  {"yahoo": "5m",  "range": "60d",   "backfill_days": 60,
             "chunk_days": None, "ttl": 300, "warmup": 1000},
     "1h":  {"yahoo": "60m", "range": "730d",  "backfill_days": 730,
@@ -73,6 +73,13 @@ def market_open(now=None):
         return False
     hours = n.hour + n.minute / 60.0
     return 9.25 <= hours < 15.5
+
+
+def _reset_session():
+    """Yahoo flags sessions; a fresh one often gets through."""
+    global _session
+    with _lock:
+        _session = None
 
 
 def _get_session():
@@ -147,12 +154,14 @@ def _request(params, attempts=MAX_ATTEMPTS):
                 continue
         last_error = "HTTP %s" % response.status_code
         if response.status_code in (429, 502, 503, 504):
-            # Stop the whole fetcher for a while instead of retrying into the
-            # same wall; cached data keeps the dashboard working.
-            COOLDOWN_UNTIL[0] = time.time() + 300
-            time.sleep(min(15, RETRY_SLEEPS[min(attempt, len(RETRY_SLEEPS) - 1)]))
+            # Yahoo allows only a few requests per window, so a 429 is often
+            # transient. Retry with growing gaps; only cool down after the
+            # whole attempt budget is spent.
+            _reset_session()
+            time.sleep(RETRY_SLEEPS[min(attempt, len(RETRY_SLEEPS) - 1)])
             continue
         break
+    COOLDOWN_UNTIL[0] = time.time() + 600
     return None, last_error
 
 
@@ -162,18 +171,23 @@ def warm_session():
         return True
     if COOLDOWN_UNTIL[0] > time.time():
         return False
-    _throttle()
-    try:
-        response = _get_session().get(
-            YAHOO_URL.format(sym="%5ENSEI"),
-            params={"interval": "1d", "range": "5d"}, timeout=20)
-    except Exception:
-        return False
-    if response.status_code == 429:
-        COOLDOWN_UNTIL[0] = time.time() + 300
-        return False
-    WARM[0] = response.status_code == 200
-    return WARM[0]
+    for attempt in range(2):
+        _throttle()
+        try:
+            response = _get_session().get(
+                YAHOO_URL.format(sym="%5ENSEI"),
+                params={"interval": "1d", "range": "5d"}, timeout=20)
+        except Exception:
+            continue
+        if response.status_code == 200:
+            WARM[0] = True
+            return True
+        if response.status_code == 429:
+            _reset_session()
+            time.sleep(10 + attempt * 5)
+            continue
+        break
+    return False
 
 
 def _to_bars(result):
@@ -290,10 +304,7 @@ def get_series(tf, allow_fetch=True, force=False):
         return {"bars": [], "stale": True, "fetched_ts": None,
                 "error": "throttled; no cache yet"}
 
-    if tf == "1m" and (not cached or len(cached.get("bars") or []) < spec["warmup"]):
-        bars, error = _backfill_1m()
-    else:
-        bars, error = _fetch_range(tf)
+    bars, error = _fetch_range(tf)
 
     if bars:
         if cached and tf in ("1m", "5m", "1h"):
@@ -306,7 +317,7 @@ def get_series(tf, allow_fetch=True, force=False):
     if cached:
         return {"bars": cached["bars"], "stale": True,
                 "fetched_ts": cached.get("fetched_ts"), "error": error}
-    FAILED_UNTIL[tf] = time.time() + 1800
+    FAILED_UNTIL[tf] = time.time() + 3600
     if nse_fallback:
         return nse_fallback
     return {"bars": [], "stale": True, "fetched_ts": None, "error": error}

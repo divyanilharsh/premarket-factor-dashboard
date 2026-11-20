@@ -1405,7 +1405,7 @@ KEY_CHIPS = mm.KEY_CHIPS
 TECH_DIRECTION = {"VP": "bullish", "P": "bullish", "NE": "neutral",
                   "N": "bearish", "VN": "bearish"}
 TECH_CATEGORY = "12. TECHNICAL / GOLDEN GATE"
-TECH_POLL_SECONDS = 180
+TECH_POLL_SECONDS = 900
 
 
 def tech_payload():
