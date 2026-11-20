@@ -1,0 +1,11 @@
+PRE-MARKET PULSE - FACTOR DECISION TREE
+Trained : 2026-11-20 15:09:08
+Status  : learning (33/120 pairs)
+Target  : next hourly NIFTY % return, quantile bands
+Cuts    : VN<=-0.160  N<=-0.014  NE<=0.064  P<=0.234  else VP
+Features: 43
+
+IF 10. SENTIMENT / TECHNICAL::market_breadth <= -88.5 (missing)
+  -> VN  (40%, n=17)
+ELSE 10. SENTIMENT / TECHNICAL::market_breadth > -88.5
+  -> N  (40%, n=16)

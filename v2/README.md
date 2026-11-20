@@ -146,6 +146,63 @@ Double-click `Export Training Data CSV.bat` for the same result. The script
 prints how many valid pairs exist and how many more are needed before the V2
 neural net can train.
 
+## Decision tree (VP / P / NE / N / VN)
+
+A shallow decision tree predicts the **next hourly NIFTY return** as one of
+five classes.  It is shared by both dashboards: one model, one set of class
+cuts, trained from the V2 SQLite store.
+
+| Class | Meaning |
+|---|---|
+| `VN` | very negative |
+| `N`  | negative |
+| `NE` | neutral |
+| `P`  | positive |
+| `VP` | very positive |
+
+Bands are **quantiles** (20/40/60/80) of the training window, so classes stay
+balanced as the sample grows.  The cut points are frozen into the model file
+and reused at inference until the next retrain.
+
+Inputs are point-in-time only: every factor's hourly `delta` (features with
+under 40% coverage are dropped), the four momentum inputs, `nifty_day_pct`,
+hour-of-day, factor count and bullish/bearish breadth.
+
+```bash
+python v2/train_tree.py                  # train + validate + export
+python v2/train_tree.py --min-pairs 40   # preview only, not a score
+python v2/selftest_tree.py               # labels, leakage, export, inference
+```
+
+Outputs:
+
+| File | Contents |
+|---|---|
+| `data/v2/tree_model.json` | cuts, feature list, JSON tree, metrics |
+| `data/exports/tree_rules.txt` | human-readable if/then rules |
+| `data/exports/tree_confusion.csv` | walk-forward confusion matrix |
+| `data/v2/tree_history.json` | cuts + scores of the last 200 retrains |
+
+Only the tree is served.  RandomForest and HistGradientBoosting are scored on
+the same expanding-window folds as benchmarks (1-mark embargo, no shuffling),
+next to a majority-class baseline.
+
+**Sample gate:** below `--min-pairs` (default **120**) the tree is still
+exported but its status is `learning`.  The dashboards then show
+`TREE learning (33/120)` and the API exposes an `in_sample` preview instead of
+a `prediction`.  No accuracy is claimed below the gate.
+
+Both dashboards expose the same payload:
+
+```text
+http://127.0.0.1:8080/api/tree    # V1
+http://127.0.0.1:8081/api/tree    # V2
+```
+
+and show a `TREE` chip plus a `TREE - next-hour class` row in the hourly-track
+category.  V1 hot-reloads `tree_model.json` when it changes; V2 retrains it in
+the background after each new hourly mark (at most every 10 minutes).
+
 ## Self-test
 
 ```bat

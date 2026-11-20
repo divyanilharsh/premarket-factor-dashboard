@@ -94,6 +94,11 @@ try:  # optional: lets the server render a scannable QR code for the phone
 except Exception:  # pragma: no cover
     qrcode = None
 
+try:  # shared decision-tree inference (stdlib only, model file optional)
+    import tree_model
+except Exception:  # pragma: no cover - V1 must still run without it
+    tree_model = None
+
 
 # --------------------------------------------------------------------------
 # Configuration
@@ -2890,6 +2895,59 @@ class HourlyTracker:
             details=model_details,
             source="local model")
 
+        tree_state = {}
+        try:
+            if TREE is not None:
+                tree_state = TREE.payload(self.hourly[-8:])
+        except Exception:
+            tree_state = {"status": "missing"}
+        tree_ready = tree_state.get("status") == "ready"
+        tree_best = (tree_state.get("prediction")
+                     or tree_state.get("preview") or {})
+        tree_cls = tree_best.get("class")
+        tree_prob = tree_best.get("probability")
+        tree_dir = ("bullish" if tree_cls in ("P", "VP") else
+                    "bearish" if tree_cls in ("N", "VN") else "neutral")
+        tree_cuts = tree_state.get("cuts") or {}
+        if tree_state.get("status") == "missing":
+            tree_value = "no model"
+            tree_change = "run v2/train_tree.py"
+            tree_details = ("No decision tree exported yet. Train it with "
+                            "python v2/train_tree.py.")
+            tree_dir = "neutral"
+        elif tree_ready:
+            tree_value = "%s %d%%" % (tree_cls, round(100 * float(tree_prob)))
+            tree_change = "next-hour class"
+            tree_details = ("Quantile bands of the next hourly NIFTY return: "
+                            "VN<=%.3f N<=%.3f NE<=%.3f P<=%.3f else VP. "
+                            "%d pairs. Macro F1 %s."
+                            % (tree_cuts.get("vn_max", 0), tree_cuts.get("n_max", 0),
+                               tree_cuts.get("ne_max", 0), tree_cuts.get("p_max", 0),
+                               tree_state.get("n_pairs") or 0,
+                               (("%.3f" % tree_state["metrics"]["tree"]["macro_f1"])
+                                if (tree_state.get("metrics") or {}).get("tree")
+                                else "n/a")))
+        else:
+            tree_value = "learning (%d/%d)" % (tree_state.get("n_pairs") or 0,
+                                               tree_state.get("min_pairs") or 0)
+            tree_change = "preview %s" % (
+                ("%s %d%%" % (tree_cls, round(100 * float(tree_prob))))
+                if tree_cls else "n/a")
+            tree_details = ("Decision tree on %d factor inputs. Needs %d "
+                            "pairs before it reports a score; the preview is "
+                            "in-sample only. Labels: VN/P/NE/N/VP on the next "
+                            "hourly NIFTY return."
+                            % (tree_state.get("features_used") or 0,
+                               tree_state.get("min_pairs") or 0))
+        rows["tree_prediction"] = factor(
+            label="TREE - next-hour class",
+            value=tree_value,
+            change=tree_change,
+            direction=tree_dir,
+            status="ok" if tree_ready else "manual",
+            details=tree_details,
+            source="shared decision tree")
+
         # Nodes on the track rows: power is always the 100 default; effect
         # follows the same bullish/bearish mapping where a direction exists.
         rows["nifty_hourly"]["effect"] = 75.0 if hour_dir == "bullish" else \
@@ -2907,7 +2965,7 @@ class HourlyTracker:
             "short": "Hourly Track / NN",
             "num": "0",
             "factors": [rows[k] for k in
-                        ("nifty_hourly", "nn_prediction",
+                        ("nifty_hourly", "nn_prediction", "tree_prediction",
                          "hourly_log", "model_status")],
         }
 
@@ -2941,6 +2999,20 @@ class HourlyTracker:
                            "neutral") if pred else "neutral"),
             "status": "ok" if pred else "manual",
         })
+        chips.append({
+            "label": "TREE",
+            "value": ("%s %d%%" % (tree_cls, round(100 * float(tree_prob)))
+                      if tree_ready else
+                      "learning" if tree_state.get("status") != "missing"
+                      else "no model"),
+            "change": ("next hour" if tree_ready else
+                       ("%d/%d pairs" % (tree_state.get("n_pairs") or 0,
+                                         tree_state.get("min_pairs") or 0)
+                        if tree_state.get("status") != "missing"
+                        else "train_tree.py")),
+            "direction": tree_dir,
+            "status": "ok" if tree_ready else "manual",
+        })
 
         return {
             "category": category,
@@ -2952,6 +3024,7 @@ class HourlyTracker:
                 "marks": len(self.hourly),
                 "last_mark": (latest or {}).get("time"),
                 "prediction": pred,
+                "tree": tree_state,
                 "model": {
                     "samples": samples,
                     "feature_keys": (len(self.feature_keys)
@@ -2967,6 +3040,7 @@ class HourlyTracker:
 
 
 TRACKER = HourlyTracker()
+TREE = tree_model.SharedTree() if tree_model else None
 
 
 # --------------------------------------------------------------------------
@@ -4003,6 +4077,11 @@ class Handler(BaseHTTPRequestHandler):
                 self._json(data)
             elif path == "/api/status":
                 self._json(STORE.status())
+            elif path == "/api/tree":
+                marks = list(TRACKER.hourly)[-8:]
+                self._json(TREE.payload(marks) if TREE is not None
+                           else {"status": "missing", "classes": [],
+                                 "prediction": None})
             elif path == "/api/hourly":
                 query = urllib.parse.parse_qs(
                     urllib.parse.urlparse(self.path).query)

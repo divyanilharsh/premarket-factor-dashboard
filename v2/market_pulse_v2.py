@@ -37,6 +37,7 @@ import os
 import random
 import socket
 import sqlite3
+import subprocess
 import sys
 import threading
 import time
@@ -59,6 +60,8 @@ except Exception as exc:  # pragma: no cover - gives a useful startup message
                      (BASE_DIR, exc))
     raise
 
+import tree_model
+
 DATA_DIR = os.path.join(BASE_DIR, "data", "v2")
 os.makedirs(DATA_DIR, exist_ok=True)
 DB_FILE = os.path.join(DATA_DIR, "market.db")
@@ -66,6 +69,9 @@ SNAPSHOT_FILE = os.path.join(DATA_DIR, "snapshot.json")
 NODES_FILE = os.path.join(DATA_DIR, "nodes.json")
 MODEL_FILE = os.path.join(DATA_DIR, "model.json")
 OLD_HOURLY_FILE = os.path.join(BASE_DIR, "data", "mobile", "hourly.json")
+
+TREE = tree_model.SharedTree()
+TREE_RETRAIN = {"count": -1, "ts": 0.0}
 
 # Keep V1's FII cache reader intact but send any V1 helper's writes to V2.
 mm.FII_HISTORY_FILE = os.path.join(DATA_DIR, "fii_history.json")
@@ -1219,6 +1225,59 @@ class V2Tracker:
             change="%d pairs" % samples,
             direction="neutral", status="ok",
             details=model_details, source="V2 learner")
+
+        tree_state = {}
+        try:
+            tree_state = TREE.payload(self.store.load_marks(limit=8))
+        except Exception:
+            tree_state = {"status": "missing"}
+        tree_ready = tree_state.get("status") == "ready"
+        tree_best = (tree_state.get("prediction")
+                     or tree_state.get("preview") or {})
+        tree_cls = tree_best.get("class")
+        tree_prob = tree_best.get("probability")
+        tree_dir = ("bullish" if tree_cls in ("P", "VP") else
+                    "bearish" if tree_cls in ("N", "VN") else "neutral")
+        tree_cuts = tree_state.get("cuts") or {}
+        if tree_state.get("status") == "missing":
+            tree_value = "no model"
+            tree_change = "run v2/train_tree.py"
+            tree_details = ("No decision tree exported yet. Train it with "
+                            "python v2/train_tree.py.")
+            tree_dir = "neutral"
+        elif tree_ready:
+            tree_value = "%s %d%%" % (tree_cls, round(100 * float(tree_prob)))
+            tree_change = "next-hour class"
+            tree_details = ("Quantile bands of the next hourly NIFTY return: "
+                            "VN<=%.3f N<=%.3f NE<=%.3f P<=%.3f else VP. "
+                            "%d pairs. Macro F1 %s."
+                            % (tree_cuts.get("vn_max", 0), tree_cuts.get("n_max", 0),
+                               tree_cuts.get("ne_max", 0), tree_cuts.get("p_max", 0),
+                               tree_state.get("n_pairs") or 0,
+                               (("%.3f" % tree_state["metrics"]["tree"]["macro_f1"])
+                                if (tree_state.get("metrics") or {}).get("tree")
+                                else "n/a")))
+        else:
+            tree_value = "learning (%d/%d)" % (tree_state.get("n_pairs") or 0,
+                                               tree_state.get("min_pairs") or 0)
+            tree_change = "in-sample preview %s" % (
+                ("%s %d%%" % (tree_cls, round(100 * float(tree_prob))))
+                if tree_cls else "n/a")
+            tree_dir = "neutral"
+            tree_details = ("Decision tree on %d factor inputs. Needs %d "
+                            "pairs before it reports a score; the preview is "
+                            "in-sample only. Labels: VN/P/NE/N/VP on the next "
+                            "hourly NIFTY return."
+                            % (tree_state.get("features_used") or 0,
+                               tree_state.get("min_pairs") or 0))
+        rows["tree_prediction"] = factor(
+            label="TREE - next-hour class",
+            value=tree_value,
+            change=tree_change,
+            direction=tree_dir,
+            status="ok" if tree_ready else "manual",
+            details=tree_details,
+            source="V2 decision tree")
         for row in rows.values():
             row["power"] = 0.0
             row["effect"] = 50.0
@@ -1238,7 +1297,7 @@ class V2Tracker:
             "num": "0",
             "factors": [rows[k] for k in
                         ("nifty_hourly", "long_pe", "nn_prediction",
-                         "data_status", "model_status")],
+                         "tree_prediction", "data_status", "model_status")],
         }
 
         chips = []
@@ -1274,6 +1333,20 @@ class V2Tracker:
             "change": "%d pairs - all kept" % self.pairs,
             "direction": "neutral", "status": "ok",
         })
+        chips.insert(len(chips) - 1, {
+            "label": "TREE",
+            "value": ("%s %d%%" % (tree_cls, round(100 * float(tree_prob)))
+                      if tree_ready else
+                      "learning" if tree_state.get("status") != "missing"
+                      else "no model"),
+            "change": ("next hour" if tree_ready else
+                       ("%d/%d pairs" % (tree_state.get("n_pairs") or 0,
+                                         tree_state.get("min_pairs") or 0)
+                        if tree_state.get("status") != "missing"
+                        else "train_tree.py")),
+            "direction": tree_dir,
+            "status": "ok" if tree_ready else "manual",
+        })
 
         return {
             "category": category,
@@ -1288,6 +1361,7 @@ class V2Tracker:
                 "last_mark": (latest or {}).get("time"),
                 "first_mark": first.get("time") if first else None,
                 "prediction": pred,
+                "tree": tree_state,
                 "long_pe": pe,
                 "model": {
                     "samples": samples,
@@ -1799,6 +1873,7 @@ main{padding:0 10px}
   <a class="btn iconbtn" href="/marks.json" title="Download the V2 SQLite-backed mark log" target="_blank">LOG</a>
   <a class="btn iconbtn" href="/export.csv" title="Download CSV">CSV</a>
   <a class="btn iconbtn" href="/api/model" title="View the V2 model state" target="_blank">MODEL</a>
+  <a class="btn iconbtn" href="/api/tree" title="View the decision-tree state" target="_blank">TREE</a>
 </div>
 
 <nav class="nav" id="nav"></nav>
@@ -1813,7 +1888,8 @@ main{padding:0 10px}
   <b>LONG-TERM P/E</b> = power &times; confidence weighted effect among ticked factors. <b>NN V2</b> = new net, 50 neutral, &plusmn;1% = full bull/bear.<br>
   All hourly marks are appended to <code>data/v2/market.db</code>; the latest 2,000 are always retained and older data is kept too.
   <a href="/marks.json" target="_blank" style="color:var(--blue)">Mark log</a> &middot;
-  <a href="/api/model" target="_blank" style="color:var(--blue)">Model</a><br>
+  <a href="/api/model" target="_blank" style="color:var(--blue)">Model</a> &middot;
+  <a href="/api/tree" target="_blank" style="color:var(--blue)">Tree</a><br>
   Local dashboard &mdash; not investment advice. Tick factors to recompute the bias meter.
 </div>
 
@@ -2288,6 +2364,9 @@ class Handler(BaseHTTPRequestHandler):
                             'attachment; filename="market_pulse_v2_marks.json"'})
             elif path == "/api/model":
                 self._json(TRACKER.nn or {})
+            elif path == "/api/tree":
+                marks = TRACKER.store.load_marks(limit=8) if TRACKER else []
+                self._json(TREE.payload(marks))
             elif path == "/export.csv":
                 STORE.ensure_fresh()
                 body = csv_bytes(STORE.get() or {})
@@ -2376,11 +2455,38 @@ def backup_database(store, keep=30):
         print("[%s] V2 backup skipped: %s" % (stamp(), exc))
 
 
+def maybe_retrain_tree(mark_store):
+    """Retrain the tree after new marks arrive (at most every 10 minutes)."""
+    try:
+        count = int(mark_store.count())
+    except Exception:
+        return
+    if count < 20 or count == TREE_RETRAIN["count"]:
+        return
+    now = time.time()
+    if now - TREE_RETRAIN["ts"] < 600:
+        return
+    script = os.path.join(BASE_DIR, "v2", "train_tree.py")
+    try:
+        subprocess.run([sys.executable, script, "--quiet"], cwd=BASE_DIR,
+                       timeout=300, check=False,
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except Exception:
+        pass
+    TREE_RETRAIN["count"] = count
+    TREE_RETRAIN["ts"] = now
+    print("[%s] V2 tree retrained on %d marks" % (stamp(), count), flush=True)
+
+
 def scheduler(api_store, mark_store, market_minutes, off_minutes):
     while True:
         time.sleep(60)
         try:
             backup_database(mark_store)
+        except Exception:
+            pass
+        try:
+            maybe_retrain_tree(mark_store)
         except Exception:
             pass
         try:
@@ -2429,6 +2535,9 @@ def main(argv=None):
               % store.imported)
     TRACKER = V2Tracker(store, record_override=True if args.record_anytime else None)
     STORE = Store()
+    if TREE.get() is None:
+        threading.Thread(target=maybe_retrain_tree, args=(store,),
+                         daemon=True).start()
 
     cached = STORE.get()
     if cached:
